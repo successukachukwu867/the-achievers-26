@@ -267,10 +267,8 @@ function buildCardHTML(data, photoBase64, mime) {
 
 // ── Screenshot with Puppeteer ─────────────────────────────────────────────────
 async function screenshotCard(html) {
-  const execPath = process.env.PUPPETEER_EXECUTABLE_PATH || puppeteer.executablePath();
   const browser = await puppeteer.launch({
     headless: 'new',
-    executablePath: execPath,
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-dev-shm-usage'],
   });
   const page = await browser.newPage();
