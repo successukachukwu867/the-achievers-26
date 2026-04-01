@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Achievers 26' — Card Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green-dark: #0a3a0a;
+  --green-mid:  #1a6b1a;
+  --green-light:#2a8a2a;
+  --gold:       #f5c842;
+  --gold-dark:  #d4a017;
+  --white:      #ffffff;
+  --text-light: #cce8cc;
+  --card-max:   560px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: #0b0b0b;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(26,107,26,0.35) 0%, transparent 70%),
+    repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.008) 40px, rgba(255,255,255,0.008) 41px);
+  min-height: 100vh;
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+  padding-bottom: 60px;
+}
+
+/* ── PAGE HEADER ─────────────────────────────────────────────── */
+.page-header {
+  text-align: center;
+  padding: 48px 20px 32px;
+  position: relative;
+}
+.page-header::after {
+  content: '';
+  display: block;
+  width: 80px; height: 3px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-dark));
+  margin: 16px auto 0;
+  border-radius: 2px;
+}
+.page-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(36px, 8vw, 64px);
+  color: #fff;
+  text-shadow: 0 0 30px rgba(245,200,66,0.4), 2px 2px 8px rgba(0,0,0,0.6);
+  line-height: 1;
+}
+.page-sub {
+  font-size: clamp(11px, 2.5vw, 14px);
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+.page-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  margin-top: 10px;
+  max-width: 400px;
+  margin-left: auto; margin-right: auto;
+  line-height: 1.6;
+}
+
+/* ── FORM CARD ───────────────────────────────────────────────── */
+.form-wrap {
+  max-width: var(--card-max);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.form-card {
+  background: linear-gradient(160deg, #0f2e0f 0%, #0a1f0a 60%, #0e280e 100%);
+  border: 1px solid rgba(245,200,66,0.2);
+  border-radius: 20px;
+  padding: 32px 28px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(245,200,66,0.1);
+}
+
+/* ── SECTION TITLES ──────────────────────────────────────────── */
+.section-title {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title:first-of-type { margin-top: 0; }
+.section-title::before, .section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(245,200,66,0.3));
+}
+.section-title::before { background: linear-gradient(90deg, rgba(245,200,66,0.3), transparent); }
+
+/* ── FIELD GROUP ─────────────────────────────────────────────── */
+.field-group { margin-bottom: 16px; }
+.field-group label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 7px;
+}
+
+/* ── TEXT INPUT ──────────────────────────────────────────────── */
+.field-group input[type="text"],
+.field-group textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(245,200,66,0.2);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  outline: none;
+  resize: none;
+}
+.field-group input[type="text"]:focus,
+.field-group textarea:focus {
+  border-color: var(--gold);
+  background: rgba(245,200,66,0.06);
+  box-shadow: 0 0 0 3px rgba(245,200,66,0.1);
+}
+.field-group input::placeholder,
+.field-group textarea::placeholder { color: rgba(255,255,255,0.25); font-weight: 400; }
+
+/* ── TWO COLUMNS ─────────────────────────────────────────────── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 400px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ── CUSTOM SELECT (dropdown) ────────────────────────────────── */
+.custom-select-wrap { position: relative; }
+.custom-select-wrap select {
+  display: none; /* hidden; driven by custom UI */
+}
+.custom-select-btn {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(245,200,66,0.2);
+  border-radius: 10px;
+  padding: 12px 40px 12px 14px;
+  color: rgba(255,255,255,0.35);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  position: relative;
+  user-select: none;
+}
+.custom-select-btn.selected { color: #fff; }
+.custom-select-btn:focus, .custom-select-btn.open {
+  border-color: var(--gold);
+  background: rgba(245,200,66,0.06);
+  box-shadow: 0 0 0 3px rgba(245,200,66,0.1);
+  outline: none;
+}
+.custom-select-btn::after {
+  content: '';
+  position: absolute;
+  right: 14px; top: 50%;
+  transform: translateY(-50%) rotate(0deg);
+  width: 0; height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--gold);
+  transition: transform 0.2s;
+}
+.custom-select-btn.open::after { transform: translateY(-50%) rotate(180deg); }
+
+.custom-select-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0; right: 0;
+  background: #0f2a0f;
+  border: 1.5px solid rgba(245,200,66,0.35);
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 100;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.7);
+  max-height: 220px;
+  overflow-y: auto;
+}
+.custom-select-dropdown::-webkit-scrollbar { width: 4px; }
+.custom-select-dropdown::-webkit-scrollbar-track { background: transparent; }
+.custom-select-dropdown::-webkit-scrollbar-thumb { background: rgba(245,200,66,0.3); border-radius: 2px; }
+
+.custom-select-dropdown.open { display: block; animation: dropIn 0.18s ease; }
+@keyframes dropIn { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+
+.dropdown-option {
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  border-bottom: 1px solid rgba(245,200,66,0.07);
+}
+.dropdown-option:last-child { border-bottom: none; }
+.dropdown-option:hover { background: rgba(245,200,66,0.12); color: #fff; }
+.dropdown-option.active { background: rgba(245,200,66,0.18); color: var(--gold); font-weight: 700; }
+
+/* ── DATE OF BIRTH ROW ───────────────────────────────────────── */
+.dob-row { display: grid; grid-template-columns: 100px 1fr; gap: 10px; }
+@media (max-width: 360px) { .dob-row { grid-template-columns: 1fr 1fr; } }
+
+/* ── PHOTO UPLOAD ────────────────────────────────────────────── */
+.photo-upload-area {
+  border: 2px dashed rgba(245,200,66,0.3);
+  border-radius: 14px;
+  padding: 28px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  background: rgba(255,255,255,0.02);
+  position: relative;
+}
+.photo-upload-area:hover, .photo-upload-area.drag-over {
+  border-color: var(--gold);
+  background: rgba(245,200,66,0.05);
+}
+.photo-upload-area input[type="file"] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+.upload-icon {
+  width: 48px; height: 48px; margin: 0 auto 12px;
+  background: rgba(245,200,66,0.1);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.upload-icon svg { fill: var(--gold); }
+.upload-text { font-size: 13px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+.upload-hint { font-size: 11px; color: rgba(255,255,255,0.35); }
+
+.photo-preview-wrap { position: relative; margin-top: 0; display: none; }
+.photo-preview-wrap.show { display: block; }
+.photo-preview-wrap img {
+  width: 100%; max-height: 240px; object-fit: cover; object-position: center top;
+  border-radius: 12px; border: 2px solid rgba(245,200,66,0.35);
+  display: block;
+}
+.photo-remove-btn {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.2);
+  color: #fff; border-radius: 50%; width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 14px; line-height: 1;
+  transition: background 0.2s;
+}
+.photo-remove-btn:hover { background: rgba(220,50,50,0.8); }
+
+/* ── RELATIONSHIP STATUS PILLS ───────────────────────────────── */
+.pill-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill-option {
+  padding: 8px 16px;
+  border-radius: 30px;
+  border: 1.5px solid rgba(245,200,66,0.25);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.55);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+  user-select: none;
+}
+.pill-option:hover { border-color: var(--gold); color: var(--gold); background: rgba(245,200,66,0.07); }
+.pill-option.active { background: var(--gold); border-color: var(--gold); color: #111; font-weight: 800; }
+
+/* ── LEVEL SELECTOR BLOCKS ───────────────────────────────────── */
+.level-options { display: flex; gap: 8px; }
+.level-btn {
+  flex: 1;
+  padding: 10px 6px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(245,200,66,0.2);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.5);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-align: center;
+  user-select: none;
+}
+.level-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(245,200,66,0.07); }
+.level-btn.active { background: linear-gradient(135deg, var(--green-mid), var(--green-dark)); border-color: var(--gold); color: var(--gold); box-shadow: 0 4px 14px rgba(0,0,0,0.4); }
+
+/* ── SUBMIT BUTTON ───────────────────────────────────────────── */
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  margin-top: 28px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  border: none;
+  border-radius: 12px;
+  color: #111;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 8px 24px rgba(212,160,23,0.35);
+}
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(212,160,23,0.5);
+}
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* ── LOADING SPINNER ─────────────────────────────────────────── */
+.spinner {
+  display: none;
+  text-align: center;
+  padding: 32px 0 16px;
+}
+.spinner.show { display: block; }
+.spinner-ring {
+  display: inline-block;
+  width: 48px; height: 48px;
+  border: 4px solid rgba(245,200,66,0.2);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner-text { margin-top: 12px; font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 600; }
+
+/* ── SUCCESS SCREEN ──────────────────────────────────────────── */
+#success-screen {
+  display: none;
+  max-width: var(--card-max);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+#success-screen.show { display: block; }
+
+.success-message {
+  background: linear-gradient(160deg, #0f2e0f, #0a1f0a);
+  border: 1px solid rgba(245,200,66,0.25);
+  border-radius: 20px;
+  padding: 28px 24px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.success-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+.success-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 28px;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.success-body {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.7;
+}
+.success-body strong { color: #fff; font-weight: 700; }
+
+.preview-container { position: relative; border-radius: 16px; overflow: hidden; }
+.preview-container img {
+  width: 100%; display: block; border-radius: 16px;
+  border: 2px solid rgba(245,200,66,0.2);
+}
+/* Blur + watermark overlay */
+.preview-blur-layer {
+  position: absolute; inset: 0;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  background: rgba(0,0,0,0.18);
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.watermark-grid {
+  position: absolute; inset: 0;
+  display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: center;
+  gap: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.watermark-item {
+  font-family: 'Dancing Script', cursive;
+  font-size: 22px;
+  color: rgba(245,200,66,0.28);
+  white-space: nowrap;
+  transform: rotate(-30deg);
+  padding: 14px 10px;
+  user-select: none;
+}
+
+/* ── CHAR COUNT ──────────────────────────────────────────────── */
+.char-hint {
+  font-size: 10px;
+  color: rgba(255,255,255,0.25);
+  text-align: right;
+  margin-top: 4px;
+  transition: color 0.2s;
+}
+.char-hint.warn { color: rgba(245,160,66,0.7); }
+
+/* ── ERROR TOAST ─────────────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: #2a0a0a; border: 1px solid rgba(220,60,60,0.4);
+  color: #ff9999; padding: 12px 22px; border-radius: 10px;
+  font-size: 13px; font-weight: 600;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  z-index: 999; white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- ── PAGE HEADER ─────────────────────────────────────────── -->
+<div class="page-header">
+  <div class="page-title">The Achievers 26'</div>
+  <div class="page-sub">Finalist Card Generator</div>
+  <div class="page-desc">Fill in your details below. Your card will be prepared and delivered to you on WhatsApp.</div>
+</div>
+
+<!-- ── FORM ────────────────────────────────────────────────── -->
+<div class="form-wrap" id="form-section">
+  <div class="form-card">
+
+    <!-- IDENTITY -->
+    <div class="section-title">Identity</div>
+
+    <!-- Photo Upload -->
+    <div class="field-group">
+      <label>Your Photo</label>
+      <div class="photo-upload-area" id="upload-area">
+        <input type="file" id="photo-input" name="photo" accept="image/*">
+        <div class="upload-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+        </div>
+        <div class="upload-text">Tap to upload your photo</div>
+        <div class="upload-hint">JPG or PNG · Max 10MB</div>
+      </div>
+      <div class="photo-preview-wrap" id="photo-preview-wrap">
+        <img id="photo-preview-img" src="" alt="Preview">
+        <div class="photo-remove-btn" id="photo-remove-btn">✕</div>
+      </div>
+    </div>
+
+    <!-- Full Name -->
+    <div class="field-group">
+      <label>Full Name <span style="color:var(--gold);">*</span></label>
+      <input type="text" id="fullName" name="fullName" placeholder="Type your full name" maxlength="60">
+      <div class="char-hint" id="fullName-chars">0 / 60</div>
+    </div>
+
+    <!-- Nickname -->
+    <div class="field-group">
+      <label>Nickname <span style="color:var(--gold);">*</span></label>
+      <input type="text" id="nickname" name="nickname" placeholder="Type your nickname" maxlength="30">
+      <div class="char-hint" id="nickname-chars">0 / 30</div>
+    </div>
+
+    <!-- Social Handle -->
+    <div class="field-group">
+      <label>Social Media Handle <span style="color:var(--gold);">*</span></label>
+      <input type="text" id="socialHandle" name="socialHandle" placeholder="e.g. @yourhandle" maxlength="40">
+      <div class="char-hint" id="socialHandle-chars">0 / 40</div>
+    </div>
+
+    <!-- DOB -->
+    <div class="field-group">
+      <label>Date of Birth <span style="color:var(--gold);">*</span></label>
+      <div class="dob-row">
+        <!-- Day -->
+        <div class="custom-select-wrap" id="dob-day-wrap">
+          <div class="custom-select-btn" id="dob-day-btn" tabindex="0">Day</div>
+          <div class="custom-select-dropdown" id="dob-day-drop"></div>
+          <input type="hidden" id="dobDay" name="dobDay">
+        </div>
+        <!-- Month -->
+        <div class="custom-select-wrap" id="dob-month-wrap">
+          <div class="custom-select-btn" id="dob-month-btn" tabindex="0">Month</div>
+          <div class="custom-select-dropdown" id="dob-month-drop"></div>
+          <input type="hidden" id="dobMonth" name="dobMonth">
+        </div>
+      </div>
+    </div>
+
+    <!-- ACADEMIC -->
+    <div class="section-title">Academic</div>
+
+    <!-- Best Level -->
+    <div class="field-group">
+      <label>Best Level <span style="color:var(--gold);">*</span></label>
+      <div class="level-options" id="bestLevel-options">
+        <div class="level-btn" data-val="100">100</div>
+        <div class="level-btn" data-val="200">200</div>
+        <div class="level-btn" data-val="300">300</div>
+        <div class="level-btn" data-val="400">400</div>
+      </div>
+      <input type="hidden" id="bestLevel" name="bestLevel">
+    </div>
+
+    <!-- Worst Level -->
+    <div class="field-group">
+      <label>Worst Level <span style="color:var(--gold);">*</span></label>
+      <div class="level-options" id="worstLevel-options">
+        <div class="level-btn" data-val="100">100</div>
+        <div class="level-btn" data-val="200">200</div>
+        <div class="level-btn" data-val="300">300</div>
+        <div class="level-btn" data-val="400">400</div>
+      </div>
+      <input type="hidden" id="worstLevel" name="worstLevel">
+    </div>
+
+    <!-- Best + Worst Course -->
+    <div class="two-col">
+      <div class="field-group">
+        <label>Best Course Code <span style="color:var(--gold);">*</span></label>
+        <input type="text" id="bestCourse" name="bestCourse" placeholder="e.g. ZLY 403" maxlength="20">
+      </div>
+      <div class="field-group">
+        <label>Worst Course Code <span style="color:var(--gold);">*</span></label>
+        <input type="text" id="worstCourse" name="worstCourse" placeholder="e.g. ZLY 305" maxlength="20">
+      </div>
+    </div>
+
+    <!-- Favourite Lecturer -->
+    <div class="field-group">
+      <label>Favourite Lecturer <span style="color:var(--gold);">*</span></label>
+      <input type="text" id="favLecturer" name="favLecturer" placeholder="e.g. Prof Ande" maxlength="50">
+    </div>
+
+    <!-- PERSONAL -->
+    <div class="section-title">Personal</div>
+
+    <!-- Class Crush -->
+    <div class="field-group">
+      <label>Class Crush</label>
+      <input type="text" id="classCrush" name="classCrush" placeholder="NIL... or a name" maxlength="40">
+    </div>
+
+    <!-- Relationship Status -->
+    <div class="field-group">
+      <label>Relationship Status <span style="color:var(--gold);">*</span></label>
+      <div class="pill-options" id="relStatus-options">
+        <div class="pill-option" data-val="Single">Single</div>
+        <div class="pill-option" data-val="In a relationship">In a relationship</div>
+        <div class="pill-option" data-val="It's complicated">It's complicated</div>
+        <div class="pill-option" data-val="Married">Married</div>
+      </div>
+      <input type="hidden" id="relStatus" name="relStatus">
+    </div>
+
+    <!-- Favourite Quote -->
+    <div class="field-group">
+      <label>Favourite Quote <span style="color:var(--gold);">*</span></label>
+      <textarea id="favQuote" name="favQuote" rows="3" placeholder="Your most inspiring quote..." maxlength="160"></textarea>
+      <div class="char-hint" id="favQuote-chars">0 / 160</div>
+    </div>
+
+    <!-- If not VTE -->
+    <div class="field-group">
+      <label>If not VTE, What Else? <span style="color:var(--gold);">*</span></label>
+      <input type="text" id="ifNotVte" name="ifNotVte" placeholder="e.g. Biochemistry" maxlength="40">
+    </div>
+
+    <!-- State of Origin -->
+    <div class="field-group">
+      <label>State of Origin <span style="color:var(--gold);">*</span></label>
+      <div class="custom-select-wrap" id="state-wrap">
+        <div class="custom-select-btn" id="state-btn" tabindex="0">Select your state</div>
+        <div class="custom-select-dropdown" id="state-drop"></div>
+        <input type="hidden" id="stateOfOrigin" name="stateOfOrigin">
+      </div>
+    </div>
+
+    <!-- Hobbies -->
+    <div class="field-group">
+      <label>Hobbies <span style="color:var(--gold);">*</span></label>
+      <input type="text" id="hobbies" name="hobbies" placeholder="e.g. Reading, Football, Music" maxlength="60">
+      <div class="char-hint" id="hobbies-chars">0 / 60</div>
+    </div>
+
+    <!-- EXPERIENCES -->
+    <div class="section-title">Experiences</div>
+
+    <div class="field-group">
+      <label>Best Experience in School <span style="color:var(--gold);">*</span></label>
+      <input type="text" id="bestExp" name="bestExp" placeholder="e.g. SIWES, Convocation..." maxlength="60">
+    </div>
+    <div class="field-group">
+      <label>Worst Experience in School <span style="color:var(--gold);">*</span></label>
+      <input type="text" id="worstExp" name="worstExp" placeholder="e.g. Transport System..." maxlength="60">
+    </div>
+
+    <!-- SUBMIT -->
+    <button class="submit-btn" id="submit-btn" type="button">Generate My Card ✨</button>
+
+    <div class="spinner" id="spinner">
+      <div class="spinner-ring"></div>
+      <div class="spinner-text">Building your card... please wait</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── SUCCESS SCREEN ───────────────────────────────────────── -->
+<div id="success-screen">
+  <div class="success-message">
+    <div class="success-icon">🎉</div>
+    <div class="success-title">Your Card Is Ready!</div>
+    <div class="success-body" id="success-body">
+      Dear <strong id="success-name"></strong>,<br>
+      Your Achievers 26' card has been prepared! You'll receive it very soon on your WhatsApp ✨
+    </div>
+  </div>
+  <div class="preview-container" id="preview-container">
+    <img id="preview-img" src="" alt="Your Card Preview">
+    <div class="preview-blur-layer">
+      <div class="watermark-grid" id="watermark-grid"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CUSTOM SELECT FACTORY ────────────────────────────────────────────────
+function buildCustomSelect(btnId, dropId, hiddenId, options) {
+  const btn    = document.getElementById(btnId);
+  const drop   = document.getElementById(dropId);
+  const hidden = document.getElementById(hiddenId);
+
+  // Populate options
+  options.forEach(({ value, label }) => {
+    const el = document.createElement('div');
+    el.className = 'dropdown-option';
+    el.textContent = label;
+    el.dataset.value = value;
+    el.addEventListener('click', () => {
+      hidden.value = value;
+      btn.textContent = label;
+      btn.classList.add('selected');
+      btn.classList.remove('open');
+      drop.classList.remove('open');
+      // deactivate others, activate this
+      drop.querySelectorAll('.dropdown-option').forEach(o => o.classList.remove('active'));
+      el.classList.add('active');
+    });
+    drop.appendChild(el);
+  });
+
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = drop.classList.contains('open');
+    // close all other dropdowns
+    document.querySelectorAll('.custom-select-dropdown.open').forEach(d => {
+      d.classList.remove('open');
+      d.previousElementSibling.classList.remove('open');
+    });
+    if (!isOpen) {
+      drop.classList.add('open');
+      btn.classList.add('open');
+    }
+  });
+
+  btn.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
+    if (e.key === 'Escape') { drop.classList.remove('open'); btn.classList.remove('open'); }
+  });
+}
+
+// Close dropdowns on outside click
+document.addEventListener('click', () => {
+  document.querySelectorAll('.custom-select-dropdown.open').forEach(d => {
+    d.classList.remove('open');
+    d.previousElementSibling.classList.remove('open');
+  });
+});
+
+// ── POPULATE DAY OPTIONS ─────────────────────────────────────────────────
+function ordinal(n) {
+  const s = ['th','st','nd','rd'], v = n % 100;
+  return n + (s[(v-20)%10] || s[v] || s[0]);
+}
+const dayOpts = Array.from({length:31}, (_,i) => ({ value: String(i+1), label: ordinal(i+1) }));
+buildCustomSelect('dob-day-btn','dob-day-drop','dobDay', dayOpts);
+
+const monthOpts = ['January','February','March','April','May','June','July','August','September','October','November','December']
+  .map((m,i) => ({ value: String(i+1), label: m }));
+buildCustomSelect('dob-month-btn','dob-month-drop','dobMonth', monthOpts);
+
+// ── POPULATE NIGERIAN STATES ─────────────────────────────────────────────
+const states = ['Abia','Adamawa','Akwa Ibom','Anambra','Bauchi','Bayelsa','Benue','Borno','Cross River',
+  'Delta','Ebonyi','Edo','Ekiti','Enugu','FCT (Abuja)','Gombe','Imo','Jigawa','Kaduna','Kano',
+  'Katsina','Kebbi','Kogi','Kwara','Lagos','Nasarawa','Niger','Ogun','Ondo','Osun','Oyo',
+  'Plateau','Rivers','Sokoto','Taraba','Yobe','Zamfara'];
+buildCustomSelect('state-btn','state-drop','stateOfOrigin',
+  states.map(s => ({ value: s, label: s })));
+
+// ── LEVEL BUTTONS ────────────────────────────────────────────────────────
+function bindLevelBtns(groupId, hiddenId) {
+  const group  = document.getElementById(groupId);
+  const hidden = document.getElementById(hiddenId);
+  group.querySelectorAll('.level-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      group.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      hidden.value = btn.dataset.val;
+    });
+  });
+}
+bindLevelBtns('bestLevel-options',  'bestLevel');
+bindLevelBtns('worstLevel-options', 'worstLevel');
+
+// ── PILL OPTIONS ─────────────────────────────────────────────────────────
+function bindPills(groupId, hiddenId) {
+  const group  = document.getElementById(groupId);
+  const hidden = document.getElementById(hiddenId);
+  group.querySelectorAll('.pill-option').forEach(pill => {
+    pill.addEventListener('click', () => {
+      group.querySelectorAll('.pill-option').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      hidden.value = pill.dataset.val;
+    });
+  });
+}
+bindPills('relStatus-options', 'relStatus');
+
+// ── CHAR COUNTERS ─────────────────────────────────────────────────────────
+function bindCharCount(inputId, hintId, max) {
+  const el   = document.getElementById(inputId);
+  const hint = document.getElementById(hintId);
+  el.addEventListener('input', () => {
+    const n = el.value.length;
+    hint.textContent = `${n} / ${max}`;
+    hint.classList.toggle('warn', n > max * 0.85);
+  });
+}
+bindCharCount('fullName',    'fullName-chars',    60);
+bindCharCount('nickname',    'nickname-chars',    30);
+bindCharCount('socialHandle','socialHandle-chars',40);
+bindCharCount('favQuote',    'favQuote-chars',    160);
+bindCharCount('hobbies',     'hobbies-chars',     60);
+
+// ── PHOTO UPLOAD ─────────────────────────────────────────────────────────
+const photoInput   = document.getElementById('photo-input');
+const uploadArea   = document.getElementById('upload-area');
+const previewWrap  = document.getElementById('photo-preview-wrap');
+const previewImg   = document.getElementById('photo-preview-img');
+const removeBtn    = document.getElementById('photo-remove-btn');
+
+photoInput.addEventListener('change', () => {
+  const file = photoInput.files[0];
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  previewImg.src = url;
+  previewWrap.classList.add('show');
+  uploadArea.style.display = 'none';
+});
+
+removeBtn.addEventListener('click', () => {
+  photoInput.value = '';
+  previewImg.src = '';
+  previewWrap.classList.remove('show');
+  uploadArea.style.display = '';
+});
+
+uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+uploadArea.addEventListener('drop', e => {
+  e.preventDefault(); uploadArea.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    const dt = new DataTransfer(); dt.items.add(file);
+    photoInput.files = dt.files;
+    photoInput.dispatchEvent(new Event('change'));
+  }
+});
+
+// ── TOAST ─────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ── VALIDATION ────────────────────────────────────────────────────────────
+function validate() {
+  const req = [
+    { id:'fullName',     label:'Full Name' },
+    { id:'nickname',     label:'Nickname' },
+    { id:'socialHandle', label:'Social Media Handle' },
+    { id:'dobDay',       label:'Date of Birth (Day)' },
+    { id:'dobMonth',     label:'Date of Birth (Month)' },
+    { id:'bestLevel',    label:'Best Level' },
+    { id:'worstLevel',   label:'Worst Level' },
+    { id:'bestCourse',   label:'Best Course' },
+    { id:'worstCourse',  label:'Worst Course' },
+    { id:'favLecturer',  label:'Favourite Lecturer' },
+    { id:'relStatus',    label:'Relationship Status' },
+    { id:'favQuote',     label:'Favourite Quote' },
+    { id:'ifNotVte',     label:'If not VTE' },
+    { id:'stateOfOrigin',label:'State of Origin' },
+    { id:'hobbies',      label:'Hobbies' },
+    { id:'bestExp',      label:'Best Experience' },
+    { id:'worstExp',     label:'Worst Experience' },
+  ];
+  for (const f of req) {
+    const val = document.getElementById(f.id).value.trim();
+    if (!val) { showToast(`⚠ Please fill in: ${f.label}`); return false; }
+  }
+  return true;
+}
+
+// ── SUBMIT ────────────────────────────────────────────────────────────────
+document.getElementById('submit-btn').addEventListener('click', async () => {
+  if (!validate()) return;
+
+  const btn     = document.getElementById('submit-btn');
+  const spinner = document.getElementById('spinner');
+  btn.disabled = true;
+  spinner.classList.add('show');
+
+  const fd = new FormData();
+  const fields = ['fullName','nickname','socialHandle','dobDay','dobMonth',
+    'bestLevel','worstLevel','bestCourse','worstCourse','favLecturer',
+    'classCrush','relStatus','favQuote','ifNotVte','stateOfOrigin',
+    'hobbies','bestExp','worstExp'];
+  fields.forEach(f => fd.append(f, document.getElementById(f).value.trim()));
+
+  const photoFile = document.getElementById('photo-input').files[0];
+  if (photoFile) fd.append('photo', photoFile);
+
+  try {
+    const res  = await fetch('/submit', { method:'POST', body: fd });
+    const data = await res.json();
+
+    if (!data.ok) throw new Error(data.error || 'Server error');
+
+    // Show success screen
+    document.getElementById('form-section').style.display = 'none';
+    const successScreen = document.getElementById('success-screen');
+    successScreen.classList.add('show');
+    document.getElementById('success-name').textContent = data.name;
+    document.getElementById('preview-img').src = data.preview;
+
+    // Build watermarks
+    const wGrid = document.getElementById('watermark-grid');
+    for (let i = 0; i < 40; i++) {
+      const w = document.createElement('div');
+      w.className = 'watermark-item';
+      w.textContent = "Achievers 26'";
+      wGrid.appendChild(w);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  } catch (err) {
+    showToast('❌ ' + err.message);
+    btn.disabled = false;
+  }
+  spinner.classList.remove('show');
+});
+</script>
+</body>
+</html>
