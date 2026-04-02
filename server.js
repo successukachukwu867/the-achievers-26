@@ -179,11 +179,13 @@ function buildCardHTML(data, photoBase64, mime) {
 // ── Send email ────────────────────────────────────────────────────────────────
 async function sendEmail(fullName, cardHTML) {
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_PASS },
+    host: process.env.SMTP_HOST || 'smtp-pulse.com',
+    port: 587,
+    secure: false,
+    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
   });
   await transporter.sendMail({
-    from: `"Achievers 26' Cards" <${process.env.GMAIL_USER}>`,
+    from: `"Achievers 26' Cards" <${process.env.SMTP_USER}>`,
     to: process.env.ADMIN_EMAIL,
     subject: `New Finalist Card — ${fullName}`,
     text: `A new finalist card has been submitted by ${fullName}.`,
@@ -206,8 +208,14 @@ app.post('/submit', upload.single('photo'), async (req, res) => {
       fs.unlinkSync(req.file.path);
     }
     const cardHTML = buildCardHTML(data, photoBase64, mime);
-    await sendEmail(data.fullName, cardHTML);
-    res.json({ ok: true, cardHTML, name: data.fullName });
+    let emailSent = true;
+    try {
+      await sendEmail(data.fullName, cardHTML);
+    } catch (emailErr) {
+      console.error('Email failed:', emailErr.message);
+      emailSent = false;
+    }
+    res.json({ ok: true, cardHTML, name: data.fullName, emailSent });
   } catch (err) {
     console.error(err);
     res.status(500).json({ ok: false, error: err.message });
