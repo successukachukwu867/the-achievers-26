@@ -12,16 +12,16 @@ const PORT = process.env.PORT || 3000;
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir);
 
-// ── Temp cards store (12hr expiry) ───────────────────────────────────────────
+// ── Temp cards store (24hr expiry) ───────────────────────────────────────────
 const cardsDir = path.join(__dirname, 'cards');
 if (!fs.existsSync(cardsDir)) fs.mkdirSync(cardsDir);
 const cardStore = new Map(); // token -> { html, name, expires }
 
 function saveCard(html, name) {
   const token = crypto.randomBytes(24).toString('hex');
-  const expires = Date.now() + 12 * 60 * 60 * 1000; // 12 hours
+  const expires = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
   cardStore.set(token, { html, name, expires });
-  setTimeout(() => cardStore.delete(token), 12 * 60 * 60 * 1000);
+  setTimeout(() => cardStore.delete(token), 24 * 60 * 60 * 1000);
   return token;
 }
 
@@ -242,34 +242,7 @@ function buildCardHTML(data, photoBase64, mime) {
 }
 
 
-// ── Plain-text Email builder ──────────────────────────────────────────────────
-function buildEmailText(fullName, cardLink, data, dob) {
-  return [
-    `New Finalist Card submitted by ${fullName}.`,
-    `View & Download: ${cardLink}`,
-    `\u23f3 This link expires in 12 hours.`,
-    ``,
-    `Details:`,
-    `Nickname: ${data.nickname || '\u2014'}`,
-    `Social Handle: ${data.socialHandle || '\u2014'}`,
-    `DOB: ${dob}`,
-    `State of Origin: ${data.stateOfOrigin || '\u2014'}`,
-    `Hobbies: ${data.hobbies || '\u2014'}`,
-    `Best Level: ${data.bestLevel || '\u2014'}`,
-    `Worst Level: ${data.worstLevel || '\u2014'}`,
-    `Best Course: ${data.bestCourse || '\u2014'}`,
-    `Worst Course: ${data.worstCourse || '\u2014'}`,
-    `Fav. Lecturer: ${data.favLecturer || '\u2014'}`,
-    `Class Crush: ${data.classCrush || '\u2014'}`,
-    `Relationship: ${data.relStatus || '\u2014'}`,
-    `If Not VTE: ${data.ifNotVte || '\u2014'}`,
-    `Best Experience: ${data.bestExp || '\u2014'}`,
-    `Worst Experience: ${data.worstExp || '\u2014'}`,
-    `Favourite Quote: ${data.favQuote || '\u2014'}`,
-  ].join('\n');
-}
-
-// ── HTML Email builder (kept for reference) ───────────────────────────────────
+// ── Beautiful HTML Email builder ──────────────────────────────────────────────
 function buildEmailHTML(fullName, cardLink, data, dob) {
   const BASE = 'https://the-achievers-26-production.up.railway.app';
   const allRows = [
@@ -420,7 +393,7 @@ function buildEmailHTML(fullName, cardLink, data, dob) {
     <tr>
       <td bgcolor="#ffffff" style="padding:28px 32px;text-align:center;border-top:3px solid #1a5c1a;">
         <p style="margin:0 0 6px;font-size:16px;font-weight:bold;color:#1a5c1a;font-family:Arial,sans-serif;">The full finalist card is ready!</p>
-        <p style="margin:0 0 20px;font-size:13px;color:#555555;line-height:1.7;font-family:Arial,sans-serif;">View and download the card before the link expires.<br>⏳ This link <strong style="color:#c8900a;">expires in 12 hours</strong> — download it now!</p>
+        <p style="margin:0 0 20px;font-size:13px;color:#555555;line-height:1.7;font-family:Arial,sans-serif;">View and download the card before the link expires.<br>⏳ This link <strong style="color:#c8900a;">expires in 24 hours</strong> — download it now!</p>
         <table cellpadding="0" cellspacing="0" border="0" align="center">
           <tr>
             <td bgcolor="#1a5c1a" style="border-radius:12px;">
@@ -428,7 +401,7 @@ function buildEmailHTML(fullName, cardLink, data, dob) {
             </td>
           </tr>
         </table>
-        <p style="margin:16px 0 0;font-size:11px;color:#888888;font-family:Arial,sans-serif;">⏳ Link expires in 12 hours</p>
+        <p style="margin:16px 0 0;font-size:11px;color:#888888;font-family:Arial,sans-serif;">⏳ Link expires in 24 hours</p>
       </td>
     </tr>
 
@@ -474,8 +447,12 @@ async function getSendPulseToken() {
 
 async function sendEmail(fullName, cardLink, data) {
   const spToken = await getSendPulseToken();
-  const dob = `${ordinal(parseInt(data.dobDay))} of ${MONTHS[parseInt(data.dobMonth) - 1]}`;
-  const emailText = buildEmailText(fullName, cardLink, data, dob);
+
+  const emailText = [
+    `New Finalist Card submitted by ${fullName}.`,
+    `View & Download: ${cardLink}`,
+    `⏳ This link expires in 24 hours.`,
+  ].join('\n');
 
   const r = await fetch('https://api.sendpulse.com/smtp/emails', {
     method: 'POST',
