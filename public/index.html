@@ -386,8 +386,8 @@ body {
 .success-body strong { color: #fff; font-weight: 700; }
 
 .preview-container { position: relative; border-radius: 16px; overflow: hidden; }
-.preview-container img {
-  width: 100%; display: block; border-radius: 16px;
+.preview-container iframe {
+  width: 100%; height: 600px; display: block; border-radius: 16px;
   border: 2px solid rgba(245,200,66,0.2);
 }
 /* Blur + watermark overlay */
@@ -642,7 +642,7 @@ body {
     </div>
   </div>
   <div class="preview-container" id="preview-container">
-    <img id="preview-img" src="" alt="Your Card Preview">
+    <iframe id="preview-iframe" srcdoc="" frameborder="0" scrolling="no"></iframe>
     <div class="preview-blur-layer">
       <div class="watermark-grid" id="watermark-grid"></div>
     </div>
@@ -870,7 +870,7 @@ document.getElementById('submit-btn').addEventListener('click', async () => {
     const successScreen = document.getElementById('success-screen');
     successScreen.classList.add('show');
     document.getElementById('success-name').textContent = data.name;
-    document.getElementById('preview-img').src = data.preview;
+    document.getElementById('preview-iframe').srcdoc = data.cardHTML;
 
     // Build watermarks
     const wGrid = document.getElementById('watermark-grid');
