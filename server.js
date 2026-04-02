@@ -439,6 +439,7 @@ function buildEmailHTML(fullName, cardLink, data, dob) {
 
 </body>
 </html>`;
+}
 
 
 // ── Send email via SendPulse HTTP API ─────────────────────────────────────────
