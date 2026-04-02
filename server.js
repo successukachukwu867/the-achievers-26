@@ -3,7 +3,6 @@ const express    = require('express');
 const multer     = require('multer');
 const path       = require('path');
 const fs         = require('fs');
-const nodemailer = require('nodemailer');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -37,7 +36,7 @@ const esc = (s) => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').re
 function buildCardHTML(data, photoBase64, mime) {
   const photoSrc = photoBase64 ? `data:${mime};base64,${photoBase64}` : null;
   const photoInner = photoSrc
-    ? `<img src="${photoSrc}" alt="Photo" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">`
+    ? `<img src="${photoSrc}" alt="Photo" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">`
     : `<div class="photo-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="white"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></div>`;
   const dob = `${ordinal(parseInt(data.dobDay))} of ${MONTHS[parseInt(data.dobMonth) - 1]}`;
 
@@ -82,7 +81,8 @@ function buildCardHTML(data, photoBase64, mime) {
   .photo-caption{background:#fff;width:100%;text-align:center;padding:5px 6px 6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:3px;overflow:hidden;}
   .photo-caption-label{font-size:9px;color:#555;font-weight:700;font-style:italic;display:inline-block;transform:skewX(-10deg);white-space:nowrap;}
   .photo-caption-value{font-size:10px;color:#111;font-weight:900;font-style:italic;display:inline-block;transform:skewX(-10deg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px;}
-  .photo-inner{width:100%;flex:1;min-height:0;overflow:hidden;background:linear-gradient(160deg,#3a8a3a,#1a5a1a);border-radius:1px;}
+  .photo-inner{width:100%;flex:1;min-height:0;overflow:hidden;background:linear-gradient(160deg,#3a8a3a,#1a5a1a);border-radius:1px;position:relative;}
+  .photo-inner img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
   .photo-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(160deg,#3a8a3a,#1a5a1a);color:rgba(255,255,255,0.5);gap:8px;}
   .name-badge-wrap{margin-top:8px;width:100%;padding:2.5px;background:linear-gradient(90deg,#f5c842,#d4a017,#f5c842);clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);box-shadow:0 2px 6px rgba(0,0,0,0.4);}
   .name-badge{background:linear-gradient(90deg,#3aaa3a,#1a7a1a);padding:4px 6px;text-align:center;width:100%;clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);}
@@ -176,22 +176,43 @@ function buildCardHTML(data, photoBase64, mime) {
 </html>`;
 }
 
-// ── Send email ────────────────────────────────────────────────────────────────
-async function sendEmail(fullName, cardHTML) {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp-pulse.com',
-    port: 587,
-    secure: false,
-    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+
+// ── Send email via SendPulse HTTP API ─────────────────────────────────────────
+async function getSendPulseToken() {
+  const r = await fetch('https://api.sendpulse.com/oauth/access_token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      grant_type: 'client_credentials',
+      client_id: process.env.SP_CLIENT_ID,
+      client_secret: process.env.SP_CLIENT_SECRET,
+    }),
   });
-  await transporter.sendMail({
-    from: `"Achievers 26' Cards" <${process.env.SMTP_USER}>`,
-    to: process.env.ADMIN_EMAIL,
-    subject: `New Finalist Card — ${fullName}`,
-    text: `A new finalist card has been submitted by ${fullName}.`,
-    html: cardHTML,
-  });
+  const d = await r.json();
+  return d.access_token;
 }
+
+async function sendEmail(fullName, cardHTML) {
+  const token = await getSendPulseToken();
+  const r = await fetch('https://api.sendpulse.com/smtp/emails', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: {
+        html: cardHTML,
+        text: `New finalist card submitted by ${fullName}.`,
+        subject: `New Finalist Card — ${fullName}`,
+        from: { name: "Achievers 26' Cards", email: process.env.SMTP_USER },
+        to: [{ name: 'Admin', email: process.env.ADMIN_EMAIL }],
+      }
+    }),
+  });
+  if (!r.ok) {
+    const err = await r.text();
+    throw new Error(`SendPulse error: ${err}`);
+  }
+}
+
 
 // ── Routes ────────────────────────────────────────────────────────────────────
 app.get('/', (_, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
@@ -208,9 +229,12 @@ app.post('/submit', upload.single('photo'), async (req, res) => {
       fs.unlinkSync(req.file.path);
     }
     const cardHTML = buildCardHTML(data, photoBase64, mime);
-    let emailSent = true;
+    let emailSent = false;
     try {
-      await sendEmail(data.fullName, cardHTML);
+      await Promise.race([
+        sendEmail(data.fullName, cardHTML).then(() => { emailSent = true; }),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Email timeout')), 8000)),
+      ]);
     } catch (emailErr) {
       console.error('Email failed:', emailErr.message);
       emailSent = false;
@@ -222,4 +246,4 @@ app.post('/submit', upload.single('photo'), async (req, res) => {
   }
 });
 
-app.listen(PORT, () => console.log(`\n✅  Achievers 26' server running → http://localhost:${PORT}\n`)); 
+app.listen(PORT, () => console.log(`\n✅  Achievers 26' server running → http://localhost:${PORT}\n`));
