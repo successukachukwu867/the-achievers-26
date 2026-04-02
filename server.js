@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 require('dotenv').config();
 const express    = require('express');
 const multer     = require('multer');
@@ -10,6 +11,21 @@ const PORT = process.env.PORT || 3000;
 // ── Uploads folder ──────────────────────────────────────────────────────────
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir);
+
+// ── Temp cards store (12hr expiry) ───────────────────────────────────────────
+const cardsDir = path.join(__dirname, 'cards');
+if (!fs.existsSync(cardsDir)) fs.mkdirSync(cardsDir);
+const cardStore = new Map(); // token -> { html, name, expires }
+
+function saveCard(html, name) {
+  const token = crypto.randomBytes(24).toString('hex');
+  const expires = Date.now() + 12 * 60 * 60 * 1000; // 12 hours
+  cardStore.set(token, { html, name, expires });
+  // Auto-delete after 12hrs
+  setTimeout(() => cardStore.delete(token), 12 * 60 * 60 * 1000);
+  return token;
+}
+
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => cb(null, uploadsDir),
@@ -192,15 +208,37 @@ async function getSendPulseToken() {
   return d.access_token;
 }
 
-async function sendEmail(fullName, cardHTML) {
-  const token = await getSendPulseToken();
+async function sendEmail(fullName, cardLink, data) {
+  const spToken = await getSendPulseToken();
+
+  const emailHTML = `<!DOCTYPE html><html><body style="font-family:sans-serif;background:#f4f4f4;padding:20px;">
+<div style="max-width:600px;margin:0 auto;background:#fff;border-radius:10px;padding:24px;border:2px solid #1a6b1a;">
+<h2 style="color:#1a6b1a;margin-top:0;">New Finalist Card — ${esc(fullName)}</h2>
+<table style="width:100%;border-collapse:collapse;font-size:14px;">
+${Object.entries({
+  'Full Name': data.fullName, 'Nickname': data.nickname, 'Social Handle': data.socialHandle,
+  'Best Level': data.bestLevel, 'Worst Level': data.worstLevel,
+  'Best Course': data.bestCourse, 'Worst Course': data.worstCourse,
+  'Favourite Lecturer': data.favLecturer, 'Class Crush': data.classCrush,
+  'Relationship Status': data.relStatus, 'Favourite Quote': data.favQuote,
+  'If Not VTE': data.ifNotVte, 'Best Experience': data.bestExp,
+  'Worst Experience': data.worstExp, 'D.O.B': `${data.dobDay}/${data.dobMonth}`,
+  'State of Origin': data.stateOfOrigin, 'Hobbies': data.hobbies,
+}).map(([k, v]) => `<tr><td style="padding:6px 8px;border-bottom:1px solid #eee;color:#555;font-weight:600;width:45%">${k}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;">${esc(String(v||''))}</td></tr>`).join('')}
+</table>
+<div style="text-align:center;margin-top:24px;">
+  <a href="${cardLink}" style="background:#1a6b1a;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:16px;">👁 View Full Card</a>
+  <p style="color:#888;font-size:12px;margin-top:12px;">⏳ Link expires in 12 hours</p>
+</div>
+</div></body></html>`;
+
   const r = await fetch('https://api.sendpulse.com/smtp/emails', {
     method: 'POST',
-    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+    headers: { 'Authorization': `Bearer ${spToken}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       email: {
-        html: cardHTML,
-        text: `New finalist card submitted by ${fullName}.`,
+        html: emailHTML,
+        text: `New finalist card submitted by ${fullName}. View: ${cardLink}`,
         subject: `New Finalist Card — ${fullName}`,
         from: { name: "Achievers 26' Cards", email: process.env.SMTP_USER },
         to: [{ name: 'Admin', email: process.env.ADMIN_EMAIL }],
@@ -213,9 +251,25 @@ async function sendEmail(fullName, cardHTML) {
   }
 }
 
-
 // ── Routes ────────────────────────────────────────────────────────────────────
 app.get('/', (_, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
+
+// Temp card view route
+app.get('/card/:token', (req, res) => {
+  const entry = cardStore.get(req.params.token);
+  if (!entry || Date.now() > entry.expires) {
+    return res.status(404).send(`<!DOCTYPE html><html><body style="font-family:sans-serif;text-align:center;padding:60px;background:#111;color:#fff;">
+      <h2>⏰ Link Expired</h2><p>This card link has expired or does not exist.</p></body></html>`);
+  }
+  // Inject download button into card page
+  const withDownload = entry.html.replace('</body>', `
+<div style="position:fixed;bottom:20px;right:20px;z-index:9999;">
+  <button onclick="window.print()" style="background:#f5c842;color:#111;border:none;padding:12px 20px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.4);">⬇️ Save / Print</button>
+</div>
+</body>`);
+  res.send(withDownload);
+});
+
 
 app.post('/submit', upload.single('photo'), async (req, res) => {
   try {
@@ -229,10 +283,13 @@ app.post('/submit', upload.single('photo'), async (req, res) => {
       fs.unlinkSync(req.file.path);
     }
     const cardHTML = buildCardHTML(data, photoBase64, mime);
+    const token = saveCard(cardHTML, data.fullName);
+    const baseUrl = process.env.BASE_URL || `https://${req.headers.host}`;
+    const cardLink = `${baseUrl}/card/${token}`;
     let emailSent = false;
     try {
       await Promise.race([
-        sendEmail(data.fullName, cardHTML).then(() => { emailSent = true; }),
+        sendEmail(data.fullName, cardLink, data).then(() => { emailSent = true; }),
         new Promise((_, reject) => setTimeout(() => reject(new Error('Email timeout')), 8000)),
       ]);
     } catch (emailErr) {
