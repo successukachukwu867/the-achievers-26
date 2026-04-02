@@ -123,13 +123,16 @@ function buildCardHTML(data, photoBase64, mime) {
   .nickname-badge span { font-size: clamp(9px, 2.3vw, 13px); font-weight: 900; color: #1a1a00; letter-spacing: 0.12em; text-transform: uppercase; word-break: break-word; }
   .right-col { flex: 1; min-width: 0; display: flex; flex-direction: column; padding-top: 2px; }
   .right-col-inner { display: flex; flex-direction: column; gap: 0; }
-  .stat-row { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; gap: 4px; border-bottom: 1.5px solid rgba(212,170,30,0.85); }
+  .stat-row { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; gap: 4px; position: relative; }
+  .stat-row::after { content:''; display:block; position:absolute; bottom:0; left:0; right:0; height:1.5px; background:linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.6) 20%, #f5c842 50%, rgba(255,255,255,0.6) 80%, rgba(255,255,255,0.05) 100%); }
   .stat-label { font-size: clamp(7px, 1.8vw, 10px); color: #cce8cc; font-weight: 600; white-space: normal; flex-shrink: 0; max-width: 60%; }
   .stat-value { font-size: clamp(8px, 2vw, 11px); color: #fff; font-weight: 800; text-align: right; word-break: break-word; max-width: 45%; }
-  .quote-row { padding: 4px 0; border-bottom: 1.5px solid rgba(212,170,30,0.85); }
+  .quote-row { padding: 4px 0; position: relative; }
+  .quote-row::after { content:''; display:block; position:absolute; bottom:0; left:0; right:0; height:1.5px; background:linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.6) 20%, #f5c842 50%, rgba(255,255,255,0.6) 80%, rgba(255,255,255,0.05) 100%); }
   .quote-label { font-size: clamp(7.5px, 1.9vw, 10px); color: #cce8cc; font-weight: 600; }
   .quote-text { font-size: clamp(7.5px, 1.9vw, 10px); color: #fff; font-weight: 700; line-height: 1.4; margin-top: 1px; }
-  .exp-block { padding: 4px 0; border-bottom: 1.5px solid rgba(212,170,30,0.85); }
+  .exp-block { padding: 4px 0; position: relative; }
+  .exp-block::after { content:''; display:block; position:absolute; bottom:0; left:0; right:0; height:1.5px; background:linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.6) 20%, #f5c842 50%, rgba(255,255,255,0.6) 80%, rgba(255,255,255,0.05) 100%); }
   .exp-label { font-size: clamp(7.5px, 1.8vw, 10px); color: #cce8cc; font-weight: 600; line-height: 1.3; }
   .exp-value { font-size: clamp(8px, 2vw, 11px); color: #fff; font-weight: 800; margin-top: 1px; }
   .footer-space { height: 26px; position: relative; z-index: 2; }
@@ -173,10 +176,40 @@ function buildCardHTML(data, photoBase64, mime) {
   </div>
   <div class="header">
     <div class="logos">
+      <!-- Logo 1: VTESA crest -->
       <div class="logo-circle">
-        <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
-          <circle cx="20" cy="20" r="18" stroke="#1a6b1a" stroke-width="2.5"/>
-          <path d="M20 8 L22 16 L30 16 L24 21 L26 29 L20 24 L14 29 L16 21 L10 16 L18 16 Z" fill="#f5c842"/>
+        <svg width="30" height="30" viewBox="0 0 60 60" fill="none">
+          <!-- Shield shape -->
+          <path d="M30 4 L52 14 L52 36 Q52 50 30 58 Q8 50 8 36 L8 14 Z" fill="#1a6b1a" stroke="#f5c842" stroke-width="2"/>
+          <!-- VTE letters -->
+          <text x="30" y="28" text-anchor="middle" font-family="Arial" font-weight="900" font-size="11" fill="#f5c842" letter-spacing="-0.5">VTE</text>
+          <!-- Star top -->
+          <path d="M30 8 L31.2 11.6 L35 11.6 L32 13.8 L33.2 17.4 L30 15.2 L26.8 17.4 L28 13.8 L25 11.6 L28.8 11.6 Z" fill="#f9d84a"/>
+          <!-- Torch bottom -->
+          <rect x="27.5" y="34" width="5" height="10" rx="1" fill="#f5c842"/>
+          <ellipse cx="30" cy="33" rx="4" ry="5" fill="#f9d84a"/>
+          <ellipse cx="30" cy="31" rx="2.5" ry="3.5" fill="#fff" opacity="0.6"/>
+          <!-- Laurel hints -->
+          <path d="M12 38 Q14 33 18 35 Q16 40 12 38Z" fill="#f5c842" opacity="0.7"/>
+          <path d="M48 38 Q46 33 42 35 Q44 40 48 38Z" fill="#f5c842" opacity="0.7"/>
+        </svg>
+      </div>
+      <!-- Logo 2: EKSU crest -->
+      <div class="logo-circle">
+        <svg width="30" height="30" viewBox="0 0 60 60" fill="none">
+          <!-- Circular outer ring -->
+          <circle cx="30" cy="30" r="26" stroke="#f5c842" stroke-width="2" fill="#0e4a0e"/>
+          <!-- Book open -->
+          <path d="M14 32 Q30 27 30 27 Q30 27 46 32 L46 44 Q30 39 30 39 Q30 39 14 44 Z" fill="#f5c842" opacity="0.85"/>
+          <line x1="30" y1="27" x2="30" y2="39" stroke="#0e4a0e" stroke-width="1.5"/>
+          <!-- Flame/torch above book -->
+          <ellipse cx="30" cy="22" rx="3.5" ry="5" fill="#f9d84a"/>
+          <ellipse cx="30" cy="20" rx="2" ry="3.5" fill="#fff" opacity="0.5"/>
+          <!-- Stars on sides -->
+          <path d="M18 20 L18.7 22.2 L21 22.2 L19.2 23.5 L19.9 25.7 L18 24.4 L16.1 25.7 L16.8 23.5 L15 22.2 L17.3 22.2 Z" fill="#f5c842"/>
+          <path d="M42 20 L42.7 22.2 L45 22.2 L43.2 23.5 L43.9 25.7 L42 24.4 L40.1 25.7 L40.8 23.5 L39 22.2 L41.3 22.2 Z" fill="#f5c842"/>
+          <!-- EKSU text -->
+          <text x="30" y="52" text-anchor="middle" font-family="Arial" font-weight="900" font-size="7" fill="#f5c842" letter-spacing="0.5">EKSU</text>
         </svg>
       </div>
     </div>
@@ -240,30 +273,37 @@ function buildCardHTML(data, photoBase64, mime) {
 // ── Beautiful HTML Email builder ──────────────────────────────────────────────
 function buildEmailHTML(fullName, cardLink, data, dob) {
   const rows = [
-    ['Full Name', data.fullName],
-    ['Nickname', data.nickname],
-    ['Social Handle', data.socialHandle],
-    ['Date of Birth', dob],
-    ['Best Level', data.bestLevel],
-    ['Worst Level', data.worstLevel],
-    ['Best Course', data.bestCourse],
-    ['Worst Course', data.worstCourse],
-    ['Favourite Lecturer', data.favLecturer],
-    ['Class Crush', data.classCrush || '—'],
-    ['Relationship Status', data.relStatus],
-    ['Favourite Quote', data.favQuote],
-    ['If Not VTE', data.ifNotVte],
-    ['Best Experience', data.bestExp],
-    ['Worst Experience', data.worstExp],
-    ['State of Origin', data.stateOfOrigin],
-    ['Hobbies', data.hobbies],
+    ['🎓 Full Name', data.fullName],
+    ['✨ Nickname', data.nickname],
+    ['📱 Social Handle', data.socialHandle],
+    ['🎂 Date of Birth', dob],
+    ['🏆 Best Level', data.bestLevel],
+    ['😬 Worst Level', data.worstLevel],
+    ['📚 Best Course', data.bestCourse],
+    ['💀 Worst Course', data.worstCourse],
+    ['👨‍🏫 Favourite Lecturer', data.favLecturer],
+    ['💕 Class Crush', data.classCrush || '—'],
+    ['❤️ Relationship Status', data.relStatus],
+    ['💬 If Not VTE', data.ifNotVte],
+    ['⭐ Best Experience', data.bestExp],
+    ['😰 Worst Experience', data.worstExp],
+    ['🗺️ State of Origin', data.stateOfOrigin],
+    ['🎯 Hobbies', data.hobbies],
   ];
 
   const tableRows = rows.map(([k, v], i) => `
-    <tr style="background:${i % 2 === 0 ? 'rgba(255,255,255,0.03)' : 'transparent'};">
-      <td style="padding:9px 14px;border-bottom:1px solid rgba(245,200,66,0.12);color:#a8d5a8;font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;width:42%;vertical-align:top;">${esc(k)}</td>
-      <td style="padding:9px 14px;border-bottom:1px solid rgba(245,200,66,0.12);color:#ffffff;font-size:13px;font-weight:600;vertical-align:top;">${esc(String(v || ''))}</td>
+    <tr>
+      <td style="padding:10px 18px 10px 20px;border-bottom:1px solid rgba(245,200,66,0.15);background:${i % 2 === 0 ? 'rgba(30,107,30,0.18)' : 'rgba(14,74,14,0.12)'};width:44%;vertical-align:top;">
+        <span style="color:#b8e0b8;font-size:11.5px;font-weight:700;letter-spacing:0.04em;font-family:Arial,sans-serif;">${esc(k)}</span>
+      </td>
+      <td style="padding:10px 20px 10px 16px;border-bottom:1px solid rgba(245,200,66,0.15);background:${i % 2 === 0 ? 'rgba(30,107,30,0.10)' : 'rgba(14,74,14,0.06)'};vertical-align:top;">
+        <span style="color:#ffffff;font-size:13px;font-weight:700;font-family:Arial,sans-serif;">${esc(String(v || '—'))}</span>
+      </td>
     </tr>`).join('');
+
+  // SVG logos inlined as data URIs - VTESA crest and EKSU crest
+  const vtesaLogoSVG = `<svg width="44" height="44" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M30 4 L52 14 L52 36 Q52 50 30 58 Q8 50 8 36 L8 14 Z" fill="#1a6b1a" stroke="#f5c842" stroke-width="2"/><text x="30" y="29" text-anchor="middle" font-family="Arial" font-weight="900" font-size="10" fill="#f5c842">VTE</text><path d="M30 8 L31.2 11.6 L35 11.6 L32 13.8 L33.2 17.4 L30 15.2 L26.8 17.4 L28 13.8 L25 11.6 L28.8 11.6 Z" fill="#f9d84a"/><rect x="27.5" y="34" width="5" height="10" rx="1" fill="#f5c842"/><ellipse cx="30" cy="33" rx="4" ry="5" fill="#f9d84a"/><ellipse cx="30" cy="31" rx="2.5" ry="3.5" fill="#fff" opacity="0.6"/><path d="M12 38 Q14 33 18 35 Q16 40 12 38Z" fill="#f5c842" opacity="0.7"/><path d="M48 38 Q46 33 42 35 Q44 40 48 38Z" fill="#f5c842" opacity="0.7"/></svg>`;
+  const eksuLogoSVG = `<svg width="44" height="44" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="26" stroke="#f5c842" stroke-width="2" fill="#0e4a0e"/><path d="M14 32 Q30 27 30 27 Q30 27 46 32 L46 44 Q30 39 30 39 Q30 39 14 44 Z" fill="#f5c842" opacity="0.85"/><line x1="30" y1="27" x2="30" y2="39" stroke="#0e4a0e" stroke-width="1.5"/><ellipse cx="30" cy="22" rx="3.5" ry="5" fill="#f9d84a"/><ellipse cx="30" cy="20" rx="2" ry="3.5" fill="#fff" opacity="0.5"/><path d="M18 20 L18.7 22.2 L21 22.2 L19.2 23.5 L19.9 25.7 L18 24.4 L16.1 25.7 L16.8 23.5 L15 22.2 L17.3 22.2 Z" fill="#f5c842"/><path d="M42 20 L42.7 22.2 L45 22.2 L43.2 23.5 L43.9 25.7 L42 24.4 L40.1 25.7 L40.8 23.5 L39 22.2 L41.3 22.2 Z" fill="#f5c842"/><text x="30" y="53" text-anchor="middle" font-family="Arial" font-weight="900" font-size="7" fill="#f5c842" letter-spacing="0.5">EKSU</text></svg>`;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -272,103 +312,133 @@ function buildEmailHTML(fullName, cardLink, data, dob) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>New Finalist Card — ${esc(fullName)}</title>
 </head>
-<body style="margin:0;padding:0;background:#0b1a0b;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+<body style="margin:0;padding:0;background:#071407;font-family:Arial,'Helvetica Neue',sans-serif;">
 
-<table width="100%" cellpadding="0" cellspacing="0" style="background:linear-gradient(160deg,#0b1a0b 0%,#0a120a 100%);min-height:100vh;">
-  <tr><td align="center" style="padding:32px 16px;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:linear-gradient(180deg,#071407 0%,#0a1c0a 100%);min-height:100vh;">
+<tr><td align="center" style="padding:28px 12px 40px;">
 
-    <table width="100%" cellpadding="0" cellspacing="0" style="max-width:580px;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;">
 
-      <!-- ── HEADER ── -->
-      <tr>
-        <td style="background:linear-gradient(135deg,#1e6b1e 0%,#0e4a0e 60%,#1a5c1a 100%);border-radius:18px 18px 0 0;padding:0;overflow:hidden;">
-          <!-- Gold top bar -->
-          <div style="height:4px;background:linear-gradient(90deg,#d4a017,#f5c842,#f9d84a,#f5c842,#d4a017);"></div>
-          <table width="100%" cellpadding="0" cellspacing="0">
-            <tr>
-              <td style="padding:28px 32px 20px;">
-                <!-- Logo row -->
-                <table cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td style="vertical-align:middle;padding-right:14px;">
-                      <div style="width:52px;height:52px;border-radius:50%;background:#fff;border:2px solid #f5c842;display:flex;align-items:center;justify-content:center;text-align:center;line-height:52px;">
-                        <svg width="34" height="34" viewBox="0 0 40 40" fill="none" style="display:block;margin:9px auto 0;">
-                          <circle cx="20" cy="20" r="18" stroke="#1a6b1a" stroke-width="2.5"/>
-                          <path d="M20 8 L22 16 L30 16 L24 21 L26 29 L20 24 L14 29 L16 21 L10 16 L18 16 Z" fill="#f5c842"/>
-                        </svg>
-                      </div>
-                    </td>
-                    <td style="vertical-align:middle;">
-                      <div style="font-size:11px;font-weight:800;color:#ffffff;letter-spacing:0.06em;text-transform:uppercase;line-height:1.3;">Vocational and Technical Education<br>Students Association</div>
-                      <div style="font-size:10px;font-weight:700;color:#f5c842;letter-spacing:0.05em;text-transform:uppercase;margin-top:3px;">Ekiti State University, Ado Ekiti</div>
-                    </td>
-                  </tr>
-                </table>
+    <!-- ══ TOP GOLD BAR ══ -->
+    <tr>
+      <td style="background:linear-gradient(90deg,#8a6000,#d4a017,#f9d84a,#f5c842,#f9d84a,#d4a017,#8a6000);height:5px;border-radius:12px 12px 0 0;font-size:0;line-height:0;">&nbsp;</td>
+    </tr>
 
-                <!-- Dashed divider -->
-                <div style="border-top:2px dashed rgba(245,200,66,0.35);margin:18px 0 16px;"></div>
+    <!-- ══ HEADER ══ -->
+    <tr>
+      <td style="background:linear-gradient(145deg,#1e6b1e 0%,#0e4a0e 45%,#0a3a0a 75%,#1a5c1a 100%);padding:30px 32px 24px;border-left:1px solid rgba(245,200,66,0.25);border-right:1px solid rgba(245,200,66,0.25);">
 
-                <!-- Title -->
-                <div style="font-family:Georgia,'Times New Roman',serif;font-size:36px;color:#ffffff;line-height:1;margin-bottom:6px;font-style:italic;text-shadow:2px 2px 6px rgba(0,0,0,0.5);">The Achievers 26'</div>
-                <div style="display:inline-block;background:#2a8a2a;color:#000000;font-size:12px;font-weight:900;letter-spacing:0.1em;padding:4px 18px;border-radius:4px;text-transform:uppercase;margin-bottom:18px;">Class of 26</div>
+        <!-- Logos + Association Name -->
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+          <tr>
+            <td style="vertical-align:middle;width:56px;">
+              <!-- VTESA Logo circle -->
+              <div style="width:52px;height:52px;border-radius:50%;background:#ffffff;border:2.5px solid #f5c842;display:inline-block;text-align:center;vertical-align:middle;box-shadow:0 3px 12px rgba(0,0,0,0.5);">
+                ${vtesaLogoSVG}
+              </div>
+            </td>
+            <td style="vertical-align:middle;width:14px;">&nbsp;</td>
+            <td style="vertical-align:middle;width:56px;">
+              <!-- EKSU Logo circle -->
+              <div style="width:52px;height:52px;border-radius:50%;background:#ffffff;border:2.5px solid #f5c842;display:inline-block;text-align:center;vertical-align:middle;box-shadow:0 3px 12px rgba(0,0,0,0.5);">
+                ${eksuLogoSVG}
+              </div>
+            </td>
+            <td style="vertical-align:middle;padding-left:16px;">
+              <div style="font-size:12px;font-weight:800;color:#ffffff;letter-spacing:0.06em;text-transform:uppercase;line-height:1.4;font-family:Arial,sans-serif;">Vocational &amp; Technical Education<br>Students Association</div>
+              <div style="font-size:10.5px;font-weight:700;color:#f5c842;letter-spacing:0.05em;text-transform:uppercase;margin-top:4px;font-family:Arial,sans-serif;">Ekiti State University, Ado Ekiti</div>
+            </td>
+          </tr>
+        </table>
 
-                <!-- New submission badge -->
-                <div style="background:rgba(245,200,66,0.12);border:1.5px solid rgba(245,200,66,0.4);border-radius:10px;padding:12px 16px;margin-top:4px;">
-                  <div style="font-size:11px;color:#f5c842;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">🎉 New Finalist Card Submitted</div>
-                  <div style="font-size:20px;color:#ffffff;font-weight:900;letter-spacing:0.02em;">${esc(fullName)}</div>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
+        <!-- Dashed gold divider -->
+        <div style="border:none;border-top:2px dashed rgba(245,200,66,0.4);margin:20px 0 18px;"></div>
 
-      <!-- ── DATA TABLE ── -->
-      <tr>
-        <td style="background:#0f2a0f;border-left:1px solid rgba(245,200,66,0.15);border-right:1px solid rgba(245,200,66,0.15);padding:0;">
-          <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
-            ${tableRows}
-          </table>
-        </td>
-      </tr>
+        <!-- Title: The Achievers 26' -->
+        <div style="font-family:Georgia,'Times New Roman',serif;font-size:40px;color:#ffffff;line-height:1;margin-bottom:6px;font-style:italic;text-shadow:2px 2px 10px rgba(0,0,0,0.6);">The Achievers 26'</div>
+        <div style="display:inline-block;background:#2a8a2a;color:#000000;font-size:12px;font-weight:900;letter-spacing:0.1em;padding:4px 20px;border-radius:5px;text-transform:uppercase;margin-bottom:22px;font-family:Arial,sans-serif;">CLASS OF 26</div>
 
-      <!-- ── QUOTE HIGHLIGHT ── -->
-      <tr>
-        <td style="background:#0f2a0f;border-left:1px solid rgba(245,200,66,0.15);border-right:1px solid rgba(245,200,66,0.15);padding:0 20px 20px;">
-          <div style="background:linear-gradient(135deg,rgba(245,200,66,0.1),rgba(245,200,66,0.05));border-left:3px solid #f5c842;border-radius:0 8px 8px 0;padding:12px 16px;margin-top:4px;">
-            <div style="font-size:10px;color:#f5c842;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Favourite Quote</div>
-            <div style="font-size:14px;color:#ffffff;font-style:italic;line-height:1.6;">"${esc(data.favQuote)}"</div>
-          </div>
-        </td>
-      </tr>
+        <!-- Announcement card -->
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+          <tr>
+            <td style="background:linear-gradient(135deg,rgba(245,200,66,0.14) 0%,rgba(245,200,66,0.06) 100%);border:1.5px solid rgba(245,200,66,0.45);border-radius:12px;padding:16px 20px;">
+              <div style="font-size:10px;color:#f5c842;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px;font-family:Arial,sans-serif;">🎉 New Finalist Card Submitted</div>
+              <div style="font-size:24px;color:#ffffff;font-weight:900;letter-spacing:0.03em;font-family:Arial,sans-serif;">${esc(fullName)}</div>
+              <div style="font-size:12px;color:rgba(200,240,200,0.7);margin-top:4px;font-family:Arial,sans-serif;">aka <em style="color:#f9d84a;">${esc(data.nickname)}</em> &nbsp;·&nbsp; ${esc(data.socialHandle)}</div>
+            </td>
+          </tr>
+        </table>
 
-      <!-- ── CTA BUTTON ── -->
-      <tr>
-        <td style="background:linear-gradient(135deg,#0e4a0e,#0a3a0a);border-left:1px solid rgba(245,200,66,0.15);border-right:1px solid rgba(245,200,66,0.15);padding:24px 32px;text-align:center;">
-          <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:16px;line-height:1.6;">The full card is ready to view and download.<br>This link expires in <strong style="color:#f5c842;">12 hours</strong> — download it quickly!</div>
-          <a href="${cardLink}" style="display:inline-block;background:linear-gradient(135deg,#f5c842,#d4a017);color:#111111;padding:14px 36px;border-radius:10px;text-decoration:none;font-weight:900;font-size:15px;letter-spacing:0.05em;box-shadow:0 6px 20px rgba(212,160,23,0.4);">👁 View &amp; Download Full Card</a>
-          <div style="margin-top:14px;">
-            <span style="display:inline-block;background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.25);border-radius:20px;padding:6px 14px;font-size:11px;color:#f5c842;font-weight:700;">⏳ Link expires in 12 hours</span>
-          </div>
-        </td>
-      </tr>
+      </td>
+    </tr>
 
-      <!-- ── FOOTER ── -->
-      <tr>
-        <td style="background:#0a1a0a;border-radius:0 0 18px 18px;border:1px solid rgba(245,200,66,0.1);border-top:none;padding:16px 32px;">
-          <!-- Gold bottom bar -->
-          <div style="height:3px;background:linear-gradient(90deg,#d4a017,#f5c842,#f9d84a,#f5c842,#d4a017);border-radius:2px;margin-bottom:14px;"></div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.35);text-align:center;line-height:1.6;">This card was automatically generated by the Achievers 26' Card System.<br>© ${new Date().getFullYear()} VTESA — Ekiti State University, Ado Ekiti</div>
-        </td>
-      </tr>
+    <!-- ══ FAVOURITE QUOTE HIGHLIGHT ══ -->
+    <tr>
+      <td style="background:linear-gradient(135deg,#0f2a0f,#0c220c);border-left:1px solid rgba(245,200,66,0.2);border-right:1px solid rgba(245,200,66,0.2);padding:20px 28px;">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+          <tr>
+            <td style="border-left:4px solid #f5c842;border-radius:0 8px 8px 0;background:linear-gradient(135deg,rgba(245,200,66,0.1),rgba(245,200,66,0.03));padding:14px 18px;">
+              <div style="font-size:10px;color:#f5c842;font-weight:900;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;font-family:Arial,sans-serif;">💬 Favourite Quote</div>
+              <div style="font-size:14px;color:#ffffff;font-style:italic;line-height:1.7;font-family:Georgia,serif;">"${esc(data.favQuote)}"</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
 
-    </table>
-  </td></tr>
+    <!-- ══ DATA TABLE ══ -->
+    <tr>
+      <td style="background:#0c200c;border-left:1px solid rgba(245,200,66,0.2);border-right:1px solid rgba(245,200,66,0.2);padding:0;">
+        <!-- Section header -->
+        <div style="background:linear-gradient(90deg,rgba(245,200,66,0.18),rgba(245,200,66,0.05));border-bottom:1px solid rgba(245,200,66,0.25);padding:10px 20px;">
+          <span style="font-size:10px;color:#f5c842;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;font-family:Arial,sans-serif;">📋 Finalist Details</span>
+        </div>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+          ${tableRows}
+        </table>
+      </td>
+    </tr>
+
+    <!-- ══ CTA BUTTON ══ -->
+    <tr>
+      <td style="background:linear-gradient(145deg,#0e4a0e,#0a3a0a);border-left:1px solid rgba(245,200,66,0.2);border-right:1px solid rgba(245,200,66,0.2);padding:28px 32px;text-align:center;">
+        <div style="font-size:13px;color:rgba(200,235,200,0.75);margin-bottom:20px;line-height:1.7;font-family:Arial,sans-serif;">The full finalist card is ready to view and download.<br>⏳ This link <strong style="color:#f5c842;">expires in 12 hours</strong> — download it now!</div>
+        <!-- Big gold CTA button -->
+        <table cellpadding="0" cellspacing="0" border="0" align="center">
+          <tr>
+            <td style="background:linear-gradient(135deg,#f9d84a,#f5c842,#d4a017);border-radius:12px;box-shadow:0 6px 24px rgba(212,160,23,0.5);">
+              <a href="${cardLink}" style="display:block;padding:16px 42px;text-decoration:none;color:#111111;font-size:16px;font-weight:900;letter-spacing:0.06em;text-transform:uppercase;font-family:Arial,sans-serif;">👁 View &amp; Download Full Card</a>
+            </td>
+          </tr>
+        </table>
+        <!-- Expiry pill -->
+        <div style="margin-top:16px;">
+          <span style="display:inline-block;background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.3);border-radius:20px;padding:7px 18px;font-size:11px;color:#f5c842;font-weight:800;letter-spacing:0.06em;font-family:Arial,sans-serif;">⏳ Link expires in 12 hours</span>
+        </div>
+      </td>
+    </tr>
+
+    <!-- ══ FOOTER ══ -->
+    <tr>
+      <td style="background:#071407;border:1px solid rgba(245,200,66,0.12);border-top:none;border-radius:0 0 12px 12px;padding:18px 32px 22px;text-align:center;">
+        <!-- Gold bottom bar -->
+        <div style="height:3px;background:linear-gradient(90deg,#8a6000,#d4a017,#f9d84a,#d4a017,#8a6000);border-radius:2px;margin-bottom:14px;"></div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.3);line-height:1.7;font-family:Arial,sans-serif;">This card was automatically generated by the Achievers 26' Card System.<br>© ${new Date().getFullYear()} VTESA — Ekiti State University, Ado Ekiti</div>
+      </td>
+    </tr>
+
+    <!-- ══ BOTTOM GOLD BAR ══ -->
+    <tr>
+      <td style="background:linear-gradient(90deg,#8a6000,#d4a017,#f9d84a,#f5c842,#f9d84a,#d4a017,#8a6000);height:4px;border-radius:0 0 8px 8px;font-size:0;line-height:0;">&nbsp;</td>
+    </tr>
+
+  </table>
+
+</td></tr>
 </table>
 
 </body>
 </html>`;
-}
 
 
 // ── Send email via SendPulse HTTP API ─────────────────────────────────────────
@@ -450,8 +520,9 @@ app.get('/card/:token', (req, res) => {
 
   // Inject the full action bar (countdown + both download buttons) before </body>
   const actionBar = `
-<!-- ── html2canvas for image download ── -->
+<!-- ── html2canvas + jsPDF for downloads ── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"><\/script>
 
 <!-- ── ACTION BAR ── -->
 <style>
@@ -625,31 +696,42 @@ function downloadImage() {
 
 // ── DOWNLOAD AS PDF ───────────────────────────────────────────────────────────
 function downloadPDF() {
-  // Hide the action bar while printing so it doesn't appear in the PDF
-  var bar = document.getElementById('action-bar');
-  bar.style.display = 'none';
-  document.body.style.paddingBottom = '0';
+  var btn = document.getElementById('btn-pdf');
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg> Generating PDF...';
 
-  // Small delay so CSS takes effect, then trigger print dialog (Save as PDF)
-  setTimeout(function() {
-    window.print();
-    // Restore after dialog closes
-    setTimeout(function() {
-      bar.style.display = '';
-      document.body.style.paddingBottom = '';
-    }, 500);
-  }, 100);
+  var card = document.getElementById('the-card');
+  html2canvas(card, {
+    scale: 3,
+    useCORS: true,
+    allowTaint: true,
+    backgroundColor: '#111111',
+    logging: false,
+    windowWidth: card.scrollWidth,
+    windowHeight: card.scrollHeight
+  }).then(function(canvas) {
+    var imgData = canvas.toDataURL('image/png');
+    var { jsPDF } = window.jspdf;
+    var cardW = card.offsetWidth;
+    var cardH = card.offsetHeight;
+    // Portrait PDF sized to card aspect ratio
+    var pdfW = 210; // A4 width mm
+    var pdfH = Math.round((cardH / cardW) * pdfW);
+    var pdf = new jsPDF({ orientation: pdfH > pdfW ? 'portrait' : 'landscape', unit: 'mm', format: [pdfW, pdfH] });
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfW, pdfH, undefined, 'FAST');
+    pdf.save('achievers26-${safeName.replace(/\s+/g, '-').toLowerCase()}.pdf');
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg> Download as PDF';
+  }).catch(function(err) {
+    console.error('PDF generation failed:', err);
+    alert('PDF download failed. Please try the Image option instead.');
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg> Download as PDF';
+  });
 }
 <\/script>
 
-<!-- ── Print styles: only show the card, no background ── -->
-<style>
-  @media print {
-    body { background: white !important; padding: 0 !important; margin: 0 !important; }
-    .card { box-shadow: none !important; max-width: 100% !important; border-radius: 0 !important; }
-    #action-bar { display: none !important; }
-  }
-</style>
+
 `;
 
   const withActions = entry.html.replace('</body>', actionBar + '\n</body>');
