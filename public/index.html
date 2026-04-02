@@ -881,6 +881,9 @@ document.getElementById('submit-btn').addEventListener('click', async () => {
       wGrid.appendChild(w);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!data.emailSent) {
+      setTimeout(() => showToast('⚠️ Card created but email to admin failed. Please contact admin directly.'), 800);
+    }
 
   } catch (err) {
     showToast('❌ ' + err.message);
