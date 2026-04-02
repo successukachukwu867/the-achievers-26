@@ -176,41 +176,13 @@ function buildCardHTML(data, photoBase64, mime) {
   </div>
   <div class="header">
     <div class="logos">
-      <!-- Logo 1: VTESA crest -->
+      <!-- Logo 1: VTESA -->
       <div class="logo-circle">
-        <svg width="30" height="30" viewBox="0 0 60 60" fill="none">
-          <!-- Shield shape -->
-          <path d="M30 4 L52 14 L52 36 Q52 50 30 58 Q8 50 8 36 L8 14 Z" fill="#1a6b1a" stroke="#f5c842" stroke-width="2"/>
-          <!-- VTE letters -->
-          <text x="30" y="28" text-anchor="middle" font-family="Arial" font-weight="900" font-size="11" fill="#f5c842" letter-spacing="-0.5">VTE</text>
-          <!-- Star top -->
-          <path d="M30 8 L31.2 11.6 L35 11.6 L32 13.8 L33.2 17.4 L30 15.2 L26.8 17.4 L28 13.8 L25 11.6 L28.8 11.6 Z" fill="#f9d84a"/>
-          <!-- Torch bottom -->
-          <rect x="27.5" y="34" width="5" height="10" rx="1" fill="#f5c842"/>
-          <ellipse cx="30" cy="33" rx="4" ry="5" fill="#f9d84a"/>
-          <ellipse cx="30" cy="31" rx="2.5" ry="3.5" fill="#fff" opacity="0.6"/>
-          <!-- Laurel hints -->
-          <path d="M12 38 Q14 33 18 35 Q16 40 12 38Z" fill="#f5c842" opacity="0.7"/>
-          <path d="M48 38 Q46 33 42 35 Q44 40 48 38Z" fill="#f5c842" opacity="0.7"/>
-        </svg>
+        <img src="https://the-achievers-26-production.up.railway.app/vtesa-logo.png" alt="VTESA" style="width:36px;height:36px;object-fit:contain;display:block;">
       </div>
-      <!-- Logo 2: EKSU crest -->
+      <!-- Logo 2: EKSU -->
       <div class="logo-circle">
-        <svg width="30" height="30" viewBox="0 0 60 60" fill="none">
-          <!-- Circular outer ring -->
-          <circle cx="30" cy="30" r="26" stroke="#f5c842" stroke-width="2" fill="#0e4a0e"/>
-          <!-- Book open -->
-          <path d="M14 32 Q30 27 30 27 Q30 27 46 32 L46 44 Q30 39 30 39 Q30 39 14 44 Z" fill="#f5c842" opacity="0.85"/>
-          <line x1="30" y1="27" x2="30" y2="39" stroke="#0e4a0e" stroke-width="1.5"/>
-          <!-- Flame/torch above book -->
-          <ellipse cx="30" cy="22" rx="3.5" ry="5" fill="#f9d84a"/>
-          <ellipse cx="30" cy="20" rx="2" ry="3.5" fill="#fff" opacity="0.5"/>
-          <!-- Stars on sides -->
-          <path d="M18 20 L18.7 22.2 L21 22.2 L19.2 23.5 L19.9 25.7 L18 24.4 L16.1 25.7 L16.8 23.5 L15 22.2 L17.3 22.2 Z" fill="#f5c842"/>
-          <path d="M42 20 L42.7 22.2 L45 22.2 L43.2 23.5 L43.9 25.7 L42 24.4 L40.1 25.7 L40.8 23.5 L39 22.2 L41.3 22.2 Z" fill="#f5c842"/>
-          <!-- EKSU text -->
-          <text x="30" y="52" text-anchor="middle" font-family="Arial" font-weight="900" font-size="7" fill="#f5c842" letter-spacing="0.5">EKSU</text>
-        </svg>
+        <img src="https://the-achievers-26-production.up.railway.app/eksu-logo.png" alt="EKSU" style="width:36px;height:36px;object-fit:contain;display:block;">
       </div>
     </div>
     <div class="header-text">
@@ -331,17 +303,17 @@ function buildEmailHTML(fullName, cardLink, data, dob) {
         <!-- Logos + Association Name -->
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
           <tr>
-            <td style="vertical-align:middle;width:56px;">
+            <td style="vertical-align:middle;width:60px;">
               <!-- VTESA Logo circle -->
-              <div style="width:52px;height:52px;border-radius:50%;background:#ffffff;border:2.5px solid #f5c842;display:inline-block;text-align:center;vertical-align:middle;box-shadow:0 3px 12px rgba(0,0,0,0.5);">
-                ${vtesaLogoSVG}
+              <div style="width:54px;height:54px;border-radius:50%;background:#ffffff;border:2.5px solid #f5c842;display:inline-block;text-align:center;line-height:54px;box-shadow:0 3px 12px rgba(0,0,0,0.5);overflow:hidden;">
+                <img src="https://the-achievers-26-production.up.railway.app/vtesa-logo.png" alt="VTESA" width="46" height="46" style="display:block;margin:4px auto;object-fit:contain;">
               </div>
             </td>
             <td style="vertical-align:middle;width:14px;">&nbsp;</td>
-            <td style="vertical-align:middle;width:56px;">
+            <td style="vertical-align:middle;width:60px;">
               <!-- EKSU Logo circle -->
-              <div style="width:52px;height:52px;border-radius:50%;background:#ffffff;border:2.5px solid #f5c842;display:inline-block;text-align:center;vertical-align:middle;box-shadow:0 3px 12px rgba(0,0,0,0.5);">
-                ${eksuLogoSVG}
+              <div style="width:54px;height:54px;border-radius:50%;background:#ffffff;border:2.5px solid #f5c842;display:inline-block;text-align:center;line-height:54px;box-shadow:0 3px 12px rgba(0,0,0,0.5);overflow:hidden;">
+                <img src="https://the-achievers-26-production.up.railway.app/eksu-logo.png" alt="EKSU" width="46" height="46" style="display:block;margin:4px auto;object-fit:contain;">
               </div>
             </td>
             <td style="vertical-align:middle;padding-left:16px;">
@@ -468,16 +440,19 @@ async function sendEmail(fullName, cardLink, data) {
     body: JSON.stringify({
       email: {
         html: emailHTML,
-        text: `New Finalist Card submitted by ${fullName}.\n\nView & Download: ${cardLink}\n\n⏳ This link expires in 12 hours.\n\nDetails:\n${Object.entries({ Nickname: data.nickname, 'Social Handle': data.socialHandle, DOB: dob, 'State of Origin': data.stateOfOrigin, Hobbies: data.hobbies }).map(([k,v]) => `${k}: ${v}`).join('\n')}`,
+        text: `New Finalist Card submitted by ${fullName}. View & Download: ${cardLink} — Link expires in 12 hours.`,
         subject: `🎓 New Finalist Card — ${fullName} | Achievers 26'`,
         from: { name: "Achievers 26' Cards", email: process.env.SMTP_USER },
         to: [{ name: 'Admin', email: process.env.ADMIN_EMAIL }],
+        headers: { 'X-Mailer': 'Achievers26CardSystem', 'MIME-Version': '1.0' },
       }
     }),
   });
+  const responseText = await r.text();
+  console.log('📧 SendPulse response status:', r.status);
+  console.log('📧 SendPulse response body:', responseText);
   if (!r.ok) {
-    const err = await r.text();
-    throw new Error(`SendPulse error: ${err}`);
+    throw new Error(`SendPulse error ${r.status}: ${responseText}`);
   }
 }
 
