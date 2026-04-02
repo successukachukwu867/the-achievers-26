@@ -93,18 +93,18 @@ function buildCardHTML(data, photoBase64, mime) {
   .university { font-size: clamp(8px, 2vw, 10px); font-weight: 700; color: #f5c842; letter-spacing: 0.05em; text-transform: uppercase; }
   .divider-dots { border: none; border-top: 2px dashed rgba(245,200,66,0.4); margin: 0 14px 4px; position: relative; z-index: 2; }
   .title-section { position: relative; z-index: 2; text-align: center; padding: 6px 14px 4px; }
-  .script-title { font-family: 'Dancing Script', cursive; font-size: clamp(28px, 8vw, 42px); color: #fff; line-height: 1.1; text-shadow: 2px 2px 8px rgba(0,0,0,0.4); }
-  .class-badge { display: inline-block; background: #2a8a2a; color: #000; font-size: clamp(10px, 2.8vw, 14px); font-weight: 900; letter-spacing: 0.08em; padding: 3px 20px; border-radius: 4px; margin-top: 3px; text-transform: uppercase; }
+  .script-title { font-family: 'Dancing Script', cursive; font-size: clamp(34px, 10vw, 52px); color: #fff; line-height: 1.1; text-shadow: 0 0 20px rgba(255,230,100,0.9), 0 0 50px rgba(255,220,60,0.6), 0 0 80px rgba(255,200,0,0.3), 2px 2px 8px rgba(0,0,0,0.5); }
+  .class-badge { display: inline-block; background: linear-gradient(135deg, #1a0050, #3d0099, #6600cc, #3d0099, #1a0050); color: #f5c842; font-size: clamp(10px, 2.8vw, 14px); font-weight: 900; letter-spacing: 0.1em; padding: 4px 22px; border-radius: 20px; margin-top: 3px; text-transform: uppercase; box-shadow: 0 2px 12px rgba(102,0,204,0.6), 0 0 0 1.5px rgba(245,200,66,0.6); }
   .body { position: relative; z-index: 2; display: flex; gap: 10px; padding: 10px 14px 0; align-items: flex-start; }
   .left-col { width: clamp(180px, 50%, 240px); flex-shrink: 0; display: flex; flex-direction: column; align-items: center; position: relative; border-radius: 10px; overflow: hidden; }
   .left-col::before { content: ''; position: absolute; inset: -10px; z-index: 0; border-left: 2px solid rgba(245,200,66,0.35); border-right: 1px solid rgba(245,200,66,0.15); background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(245,200,66,0.18) 0%, transparent 65%), radial-gradient(ellipse 60% 80% at 20% 80%, rgba(245,200,66,0.12) 0%, transparent 60%), repeating-linear-gradient(-45deg, transparent 0px, transparent 14px, rgba(255,255,255,0.025) 14px, rgba(255,255,255,0.025) 15px), repeating-linear-gradient(45deg, transparent 0px, transparent 28px, rgba(245,200,66,0.04) 28px, rgba(245,200,66,0.04) 29px); pointer-events: none; }
   .left-col::after { content: ''; position: absolute; inset: 0; z-index: 0; background-image: radial-gradient(circle 1px at center, rgba(245,200,66,0.35) 0%, transparent 100%); background-size: 18px 18px; pointer-events: none; opacity: 0.5; }
   .left-col > * { position: relative; z-index: 1; }
   .meet-badge { align-self: flex-start; margin-bottom: 6px; line-height: 1; }
-  .meet-line { font-family: 'Bebas Neue', sans-serif; font-size: clamp(22px, 6vw, 34px); color: #fff; line-height: 0.92; display: block; font-style: italic; text-shadow: 3px 3px 0px rgba(0,0,0,0.4), -1px -1px 0 rgba(0,0,0,0.2); letter-spacing: 0.02em; }
-  .the-finalist-row { display: flex; align-items: center; gap: 3px; line-height: 1; }
-  .the-pill { display: inline-flex; align-items: center; justify-content: center; background: #f5c842; color: #111; font-size: clamp(7px, 1.8vw, 10px); font-weight: 900; padding: 2px 5px; border-radius: 3px; text-transform: lowercase; font-family: 'Montserrat', sans-serif; margin-bottom: 1px; }
-  .finalist-line { font-family: 'Bebas Neue', sans-serif; font-size: clamp(22px, 6vw, 34px); color: #fff; line-height: 0.92; display: block; font-style: italic; text-shadow: 3px 3px 0px rgba(0,0,0,0.4), -1px -1px 0 rgba(0,0,0,0.2); letter-spacing: 0.02em; }
+  .meet-line { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 10vw, 56px); color: #fff; line-height: 0.9; display: block; font-style: italic; text-shadow: 4px 4px 0px rgba(0,0,0,0.6), -1px -1px 0 rgba(0,0,0,0.3), 0 0 25px rgba(255,255,255,0.2); letter-spacing: 0.05em; -webkit-text-stroke: 0.5px rgba(245,200,66,0.4); }
+  .the-finalist-row { display: flex; align-items: center; gap: 4px; line-height: 1; }
+  .the-pill { display: inline-flex; align-items: center; justify-content: center; background: #f5c842; color: #111; font-size: clamp(9px, 2.2vw, 12px); font-weight: 900; padding: 3px 7px; border-radius: 4px; text-transform: lowercase; font-family: 'Montserrat', sans-serif; margin-bottom: 1px; }
+  .finalist-line { font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 10vw, 56px); color: #fff; line-height: 0.9; display: block; font-style: italic; text-shadow: 4px 4px 0px rgba(0,0,0,0.6), -1px -1px 0 rgba(0,0,0,0.3), 0 0 25px rgba(255,255,255,0.2); letter-spacing: 0.05em; -webkit-text-stroke: 0.5px rgba(245,200,66,0.4); }
   .photo-frame-wrap { width: 100%; position: relative; padding: 4px; }
   .photo-frame { width: 100%; aspect-ratio: 3 / 4; position: relative; background: #fff; padding: 8px 8px 0px 8px; transform: rotate(-2.5deg); box-shadow: 4px 4px 18px rgba(0,0,0,0.7), -2px -2px 8px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.15); clip-path: polygon(0% 1%,3% 0%,6% 1.5%,10% 0%,13% 1%,17% 0%,20% 1.5%,24% 0.5%,27% 0%,31% 1%,35% 0%,39% 1.5%,43% 0%,47% 1%,51% 0%,55% 1.5%,59% 0%,63% 1%,67% 0%,71% 1.5%,75% 0%,79% 1%,83% 0%,87% 1.5%,91% 0%,95% 1%,98% 0.5%,100% 0%,100% 0%,99% 3%,100% 7%,99.5% 12%,100% 17%,99% 22%,100% 27%,99.5% 32%,100% 37%,99% 42%,100% 47%,99.5% 52%,100% 57%,99% 62%,100% 67%,99.5% 72%,100% 77%,99% 82%,100% 87%,99.5% 92%,100% 97%,99% 100%,99% 100%,95% 99%,91% 100%,87% 98.5%,83% 100%,79% 99%,75% 100%,71% 98.5%,67% 100%,63% 99%,59% 100%,55% 98.5%,51% 100%,47% 99%,43% 100%,39% 98.5%,35% 100%,31% 99%,27% 100%,23% 98.5%,19% 100%,15% 99%,11% 100%,7% 98.5%,3% 100%,0% 100%,0% 100%,1% 97%,0% 92%,1% 87%,0% 82%,1% 77%,0% 72%,1% 67%,0% 62%,1% 57%,0% 52%,1% 47%,0% 42%,1% 37%,0% 32%,1% 27%,0% 22%,1% 17%,0% 12%,1% 7%,0% 2%); display: flex; flex-direction: column; }
   .photo-inner { width: 100%; flex: 1; min-height: 0; overflow: hidden; background: linear-gradient(160deg, #3a8a3a, #1a5a1a); border-radius: 1px; position: relative; }
@@ -176,13 +176,13 @@ function buildCardHTML(data, photoBase64, mime) {
   </div>
   <div class="header">
     <div class="logos">
-      <!-- Logo 1: VTESA -->
-      <div class="logo-circle">
-        <img src="https://the-achievers-26-production.up.railway.app/vtesa-logo.png" alt="VTESA" style="width:36px;height:36px;object-fit:contain;display:block;">
-      </div>
-      <!-- Logo 2: EKSU -->
+      <!-- Logo 1: EKSU first -->
       <div class="logo-circle">
         <img src="https://the-achievers-26-production.up.railway.app/eksu-logo.png" alt="EKSU" style="width:36px;height:36px;object-fit:contain;display:block;">
+      </div>
+      <!-- Logo 2: VTESA second -->
+      <div class="logo-circle">
+        <img src="https://the-achievers-26-production.up.railway.app/vtesa-logo.png" alt="VTESA" style="width:36px;height:36px;object-fit:contain;display:block;">
       </div>
     </div>
     <div class="header-text">
@@ -244,99 +244,112 @@ function buildCardHTML(data, photoBase64, mime) {
 
 // ── Beautiful HTML Email builder ──────────────────────────────────────────────
 function buildEmailHTML(fullName, cardLink, data, dob) {
-  const rows = [
-    ['🎓 Full Name', data.fullName],
-    ['✨ Nickname', data.nickname],
-    ['📱 Social Handle', data.socialHandle],
-    ['🎂 Date of Birth', dob],
-    ['🏆 Best Level', data.bestLevel],
-    ['😬 Worst Level', data.worstLevel],
-    ['📚 Best Course', data.bestCourse],
-    ['💀 Worst Course', data.worstCourse],
-    ['👨‍🏫 Favourite Lecturer', data.favLecturer],
-    ['💕 Class Crush', data.classCrush || '—'],
-    ['❤️ Relationship Status', data.relStatus],
-    ['💬 If Not VTE', data.ifNotVte],
-    ['⭐ Best Experience', data.bestExp],
-    ['😰 Worst Experience', data.worstExp],
-    ['🗺️ State of Origin', data.stateOfOrigin],
-    ['🎯 Hobbies', data.hobbies],
+  const BASE = 'https://the-achievers-26-production.up.railway.app';
+  const allRows = [
+    ['🎓 Full Name',          data.fullName],
+    ['✨ Nickname',           data.nickname],
+    ['📱 Social Handle',      data.socialHandle],
+    ['🎂 Date of Birth',      dob],
+    ['🏆 Best Level',         data.bestLevel],
+    ['😬 Worst Level',        data.worstLevel],
+    ['📚 Best Course',        data.bestCourse],
+    ['💀 Worst Course',       data.worstCourse],
+    ['👨‍🏫 Fav. Lecturer',    data.favLecturer],
+    ['💕 Class Crush',        data.classCrush || '—'],
+    ['❤️ Relationship',       data.relStatus],
+    ['🔀 If Not VTE',         data.ifNotVte],
+    ['⭐ Best Experience',    data.bestExp],
+    ['😰 Worst Experience',   data.worstExp],
+    ['🗺️ State of Origin',   data.stateOfOrigin],
+    ['🎯 Hobbies',            data.hobbies],
   ];
 
-  const tableRows = rows.map(([k, v], i) => `
-    <tr>
-      <td style="padding:10px 18px 10px 20px;border-bottom:1px solid rgba(245,200,66,0.15);background:${i % 2 === 0 ? 'rgba(30,107,30,0.18)' : 'rgba(14,74,14,0.12)'};width:44%;vertical-align:top;">
-        <span style="color:#b8e0b8;font-size:11.5px;font-weight:700;letter-spacing:0.04em;font-family:Arial,sans-serif;">${esc(k)}</span>
+  const tableRows = allRows.map(([k, v], i) => `
+    <tr bgcolor="${i % 2 === 0 ? '#0e3a0e' : '#0a2e0a'}">
+      <td width="44%" style="padding:10px 14px;border-bottom:1px solid #1e6b1e;">
+        <span style="color:#90d490;font-size:12px;font-weight:bold;font-family:Arial,sans-serif;">${esc(k)}</span>
       </td>
-      <td style="padding:10px 20px 10px 16px;border-bottom:1px solid rgba(245,200,66,0.15);background:${i % 2 === 0 ? 'rgba(30,107,30,0.10)' : 'rgba(14,74,14,0.06)'};vertical-align:top;">
-        <span style="color:#ffffff;font-size:13px;font-weight:700;font-family:Arial,sans-serif;">${esc(String(v || '—'))}</span>
+      <td style="padding:10px 14px;border-bottom:1px solid #1e6b1e;">
+        <span style="color:#ffffff;font-size:13px;font-weight:bold;font-family:Arial,sans-serif;">${esc(String(v || '—'))}</span>
       </td>
     </tr>`).join('');
 
-  // SVG logos inlined as data URIs - VTESA crest and EKSU crest
-  const vtesaLogoSVG = `<svg width="44" height="44" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M30 4 L52 14 L52 36 Q52 50 30 58 Q8 50 8 36 L8 14 Z" fill="#1a6b1a" stroke="#f5c842" stroke-width="2"/><text x="30" y="29" text-anchor="middle" font-family="Arial" font-weight="900" font-size="10" fill="#f5c842">VTE</text><path d="M30 8 L31.2 11.6 L35 11.6 L32 13.8 L33.2 17.4 L30 15.2 L26.8 17.4 L28 13.8 L25 11.6 L28.8 11.6 Z" fill="#f9d84a"/><rect x="27.5" y="34" width="5" height="10" rx="1" fill="#f5c842"/><ellipse cx="30" cy="33" rx="4" ry="5" fill="#f9d84a"/><ellipse cx="30" cy="31" rx="2.5" ry="3.5" fill="#fff" opacity="0.6"/><path d="M12 38 Q14 33 18 35 Q16 40 12 38Z" fill="#f5c842" opacity="0.7"/><path d="M48 38 Q46 33 42 35 Q44 40 48 38Z" fill="#f5c842" opacity="0.7"/></svg>`;
-  const eksuLogoSVG = `<svg width="44" height="44" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="30" r="26" stroke="#f5c842" stroke-width="2" fill="#0e4a0e"/><path d="M14 32 Q30 27 30 27 Q30 27 46 32 L46 44 Q30 39 30 39 Q30 39 14 44 Z" fill="#f5c842" opacity="0.85"/><line x1="30" y1="27" x2="30" y2="39" stroke="#0e4a0e" stroke-width="1.5"/><ellipse cx="30" cy="22" rx="3.5" ry="5" fill="#f9d84a"/><ellipse cx="30" cy="20" rx="2" ry="3.5" fill="#fff" opacity="0.5"/><path d="M18 20 L18.7 22.2 L21 22.2 L19.2 23.5 L19.9 25.7 L18 24.4 L16.1 25.7 L16.8 23.5 L15 22.2 L17.3 22.2 Z" fill="#f5c842"/><path d="M42 20 L42.7 22.2 L45 22.2 L43.2 23.5 L43.9 25.7 L42 24.4 L40.1 25.7 L40.8 23.5 L39 22.2 L41.3 22.2 Z" fill="#f5c842"/><text x="30" y="53" text-anchor="middle" font-family="Arial" font-weight="900" font-size="7" fill="#f5c842" letter-spacing="0.5">EKSU</text></svg>`;
-
-  return `<!DOCTYPE html>
-<html lang="en">
+  return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
-<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>New Finalist Card — ${esc(fullName)}</title>
 </head>
-<body style="margin:0;padding:0;background:#071407;font-family:Arial,'Helvetica Neue',sans-serif;">
+<body style="margin:0;padding:0;background-color:#071407;" bgcolor="#071407">
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:linear-gradient(180deg,#071407 0%,#0a1c0a 100%);min-height:100vh;">
-<tr><td align="center" style="padding:28px 12px 40px;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#071407">
+<tr><td align="center" style="padding:24px 12px 40px;">
 
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;">
+  <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;">
 
-    <!-- ══ TOP GOLD BAR ══ -->
+    <!-- GOLD TOP BAR -->
     <tr>
-      <td style="background:linear-gradient(90deg,#8a6000,#d4a017,#f9d84a,#f5c842,#f9d84a,#d4a017,#8a6000);height:5px;border-radius:12px 12px 0 0;font-size:0;line-height:0;">&nbsp;</td>
+      <td bgcolor="#d4a017" height="5" style="font-size:0;line-height:0;border-radius:12px 12px 0 0;">&nbsp;</td>
     </tr>
 
-    <!-- ══ HEADER ══ -->
+    <!-- HEADER -->
     <tr>
-      <td style="background:linear-gradient(145deg,#1e6b1e 0%,#0e4a0e 45%,#0a3a0a 75%,#1a5c1a 100%);padding:30px 32px 24px;border-left:1px solid rgba(245,200,66,0.25);border-right:1px solid rgba(245,200,66,0.25);">
+      <td bgcolor="#1a5c1a" style="padding:26px 28px 22px;border-left:1px solid #2e8b2e;border-right:1px solid #2e8b2e;">
 
-        <!-- Logos + Association Name -->
-        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <!-- Logos row -->
+        <table cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <td style="vertical-align:middle;width:60px;">
-              <!-- VTESA Logo circle -->
-              <div style="width:54px;height:54px;border-radius:50%;background:#ffffff;border:2.5px solid #f5c842;display:inline-block;text-align:center;line-height:54px;box-shadow:0 3px 12px rgba(0,0,0,0.5);overflow:hidden;">
-                <img src="https://the-achievers-26-production.up.railway.app/vtesa-logo.png" alt="VTESA" width="46" height="46" style="display:block;margin:4px auto;object-fit:contain;">
-              </div>
+            <!-- EKSU logo first -->
+            <td style="padding-right:10px;">
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td bgcolor="#ffffff" width="54" height="54" style="border-radius:50%;border:2px solid #f5c842;text-align:center;vertical-align:middle;">
+                    <img src="${BASE}/eksu-logo.png" alt="EKSU" width="44" height="44" style="display:block;border:0;margin:5px;">
+                  </td>
+                </tr>
+              </table>
             </td>
-            <td style="vertical-align:middle;width:14px;">&nbsp;</td>
-            <td style="vertical-align:middle;width:60px;">
-              <!-- EKSU Logo circle -->
-              <div style="width:54px;height:54px;border-radius:50%;background:#ffffff;border:2.5px solid #f5c842;display:inline-block;text-align:center;line-height:54px;box-shadow:0 3px 12px rgba(0,0,0,0.5);overflow:hidden;">
-                <img src="https://the-achievers-26-production.up.railway.app/eksu-logo.png" alt="EKSU" width="46" height="46" style="display:block;margin:4px auto;object-fit:contain;">
-              </div>
+            <!-- VTESA logo second -->
+            <td style="padding-right:14px;">
+              <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td bgcolor="#ffffff" width="54" height="54" style="border-radius:50%;border:2px solid #f5c842;text-align:center;vertical-align:middle;">
+                    <img src="${BASE}/vtesa-logo.png" alt="VTESA" width="44" height="44" style="display:block;border:0;margin:5px;">
+                  </td>
+                </tr>
+              </table>
             </td>
-            <td style="vertical-align:middle;padding-left:16px;">
-              <div style="font-size:12px;font-weight:800;color:#ffffff;letter-spacing:0.06em;text-transform:uppercase;line-height:1.4;font-family:Arial,sans-serif;">Vocational &amp; Technical Education<br>Students Association</div>
-              <div style="font-size:10.5px;font-weight:700;color:#f5c842;letter-spacing:0.05em;text-transform:uppercase;margin-top:4px;font-family:Arial,sans-serif;">Ekiti State University, Ado Ekiti</div>
+            <!-- Text -->
+            <td style="vertical-align:middle;">
+              <p style="margin:0;font-size:12px;font-weight:bold;color:#ffffff;letter-spacing:1px;text-transform:uppercase;font-family:Arial,sans-serif;line-height:1.5;">Vocational &amp; Technical Education<br>Students Association</p>
+              <p style="margin:4px 0 0;font-size:10px;font-weight:bold;color:#f5c842;letter-spacing:1px;text-transform:uppercase;font-family:Arial,sans-serif;">Ekiti State University, Ado Ekiti</p>
             </td>
           </tr>
         </table>
 
-        <!-- Dashed gold divider -->
-        <div style="border:none;border-top:2px dashed rgba(245,200,66,0.4);margin:20px 0 18px;"></div>
+        <!-- Divider -->
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:18px 0 16px;">
+          <tr><td bgcolor="#2e8b2e" height="1" style="font-size:0;line-height:0;">&nbsp;</td></tr>
+        </table>
 
-        <!-- Title: The Achievers 26' -->
-        <div style="font-family:Georgia,'Times New Roman',serif;font-size:40px;color:#ffffff;line-height:1;margin-bottom:6px;font-style:italic;text-shadow:2px 2px 10px rgba(0,0,0,0.6);">The Achievers 26'</div>
-        <div style="display:inline-block;background:#2a8a2a;color:#000000;font-size:12px;font-weight:900;letter-spacing:0.1em;padding:4px 20px;border-radius:5px;text-transform:uppercase;margin-bottom:22px;font-family:Arial,sans-serif;">CLASS OF 26</div>
-
-        <!-- Announcement card -->
-        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <!-- Title -->
+        <p style="margin:0 0 4px;font-family:Georgia,'Times New Roman',serif;font-size:38px;color:#ffffff;font-style:italic;">The Achievers 26'</p>
+        <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:18px;">
           <tr>
-            <td style="background:linear-gradient(135deg,rgba(245,200,66,0.14) 0%,rgba(245,200,66,0.06) 100%);border:1.5px solid rgba(245,200,66,0.45);border-radius:12px;padding:16px 20px;">
-              <div style="font-size:10px;color:#f5c842;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px;font-family:Arial,sans-serif;">🎉 New Finalist Card Submitted</div>
-              <div style="font-size:24px;color:#ffffff;font-weight:900;letter-spacing:0.03em;font-family:Arial,sans-serif;">${esc(fullName)}</div>
-              <div style="font-size:12px;color:rgba(200,240,200,0.7);margin-top:4px;font-family:Arial,sans-serif;">aka <em style="color:#f9d84a;">${esc(data.nickname)}</em> &nbsp;·&nbsp; ${esc(data.socialHandle)}</div>
+            <td bgcolor="#6600cc" style="padding:5px 20px;border-radius:20px;border:1px solid #f5c842;">
+              <span style="font-size:12px;font-weight:bold;color:#f5c842;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">CLASS OF 26</span>
+            </td>
+          </tr>
+        </table>
+
+        <!-- New card banner -->
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td bgcolor="#0e3a0e" style="padding:16px 20px;border-radius:10px;border:1px solid #f5c842;">
+              <p style="margin:0 0 6px;font-size:10px;font-weight:bold;color:#f5c842;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">🎉 New Finalist Card Submitted</p>
+              <p style="margin:0 0 4px;font-size:24px;font-weight:bold;color:#ffffff;font-family:Arial,sans-serif;">${esc(fullName)}</p>
+              <p style="margin:0;font-size:12px;color:#90d490;font-family:Arial,sans-serif;">aka <em style="color:#f9d84a;">${esc(data.nickname)}</em> &nbsp;&bull;&nbsp; ${esc(data.socialHandle)}</p>
             </td>
           </tr>
         </table>
@@ -344,64 +357,66 @@ function buildEmailHTML(fullName, cardLink, data, dob) {
       </td>
     </tr>
 
-    <!-- ══ FAVOURITE QUOTE HIGHLIGHT ══ -->
+    <!-- QUOTE BLOCK -->
     <tr>
-      <td style="background:linear-gradient(135deg,#0f2a0f,#0c220c);border-left:1px solid rgba(245,200,66,0.2);border-right:1px solid rgba(245,200,66,0.2);padding:20px 28px;">
-        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+      <td bgcolor="#0a2a0a" style="padding:0;border-left:1px solid #2e8b2e;border-right:1px solid #2e8b2e;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <td style="border-left:4px solid #f5c842;border-radius:0 8px 8px 0;background:linear-gradient(135deg,rgba(245,200,66,0.1),rgba(245,200,66,0.03));padding:14px 18px;">
-              <div style="font-size:10px;color:#f5c842;font-weight:900;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;font-family:Arial,sans-serif;">💬 Favourite Quote</div>
-              <div style="font-size:14px;color:#ffffff;font-style:italic;line-height:1.7;font-family:Georgia,serif;">"${esc(data.favQuote)}"</div>
+            <td bgcolor="#0a2a0a" width="4" style="font-size:0;">&nbsp;</td>
+            <td bgcolor="#f5c842" width="4" style="font-size:0;">&nbsp;</td>
+            <td bgcolor="#0a2a0a" style="padding:16px 18px;">
+              <p style="margin:0 0 6px;font-size:10px;font-weight:bold;color:#f5c842;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">💬 Favourite Quote</p>
+              <p style="margin:0;font-size:14px;color:#ffffff;font-style:italic;line-height:1.7;font-family:Georgia,serif;">"${esc(data.favQuote)}"</p>
             </td>
           </tr>
         </table>
       </td>
     </tr>
 
-    <!-- ══ DATA TABLE ══ -->
+    <!-- DETAILS HEADER -->
     <tr>
-      <td style="background:#0c200c;border-left:1px solid rgba(245,200,66,0.2);border-right:1px solid rgba(245,200,66,0.2);padding:0;">
-        <!-- Section header -->
-        <div style="background:linear-gradient(90deg,rgba(245,200,66,0.18),rgba(245,200,66,0.05));border-bottom:1px solid rgba(245,200,66,0.25);padding:10px 20px;">
-          <span style="font-size:10px;color:#f5c842;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;font-family:Arial,sans-serif;">📋 Finalist Details</span>
-        </div>
-        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">
+      <td bgcolor="#0c320c" style="padding:10px 18px;border-left:1px solid #2e8b2e;border-right:1px solid #2e8b2e;border-bottom:1px solid #2e8b2e;">
+        <span style="font-size:10px;font-weight:bold;color:#f5c842;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">📋 Finalist Details</span>
+      </td>
+    </tr>
+
+    <!-- DATA TABLE -->
+    <tr>
+      <td style="padding:0;border-left:1px solid #2e8b2e;border-right:1px solid #2e8b2e;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
           ${tableRows}
         </table>
       </td>
     </tr>
 
-    <!-- ══ CTA BUTTON ══ -->
+    <!-- CTA SECTION -->
     <tr>
-      <td style="background:linear-gradient(145deg,#0e4a0e,#0a3a0a);border-left:1px solid rgba(245,200,66,0.2);border-right:1px solid rgba(245,200,66,0.2);padding:28px 32px;text-align:center;">
-        <div style="font-size:13px;color:rgba(200,235,200,0.75);margin-bottom:20px;line-height:1.7;font-family:Arial,sans-serif;">The full finalist card is ready to view and download.<br>⏳ This link <strong style="color:#f5c842;">expires in 12 hours</strong> — download it now!</div>
-        <!-- Big gold CTA button -->
+      <td bgcolor="#0e4a0e" style="padding:28px 32px;text-align:center;border-left:1px solid #2e8b2e;border-right:1px solid #2e8b2e;">
+        <p style="margin:0 0 20px;font-size:13px;color:#c8e8c8;line-height:1.7;font-family:Arial,sans-serif;">The full finalist card is ready to view and download.<br>⏳ This link <strong style="color:#f5c842;">expires in 12 hours</strong> — download it now!</p>
         <table cellpadding="0" cellspacing="0" border="0" align="center">
           <tr>
-            <td style="background:linear-gradient(135deg,#f9d84a,#f5c842,#d4a017);border-radius:12px;box-shadow:0 6px 24px rgba(212,160,23,0.5);">
-              <a href="${cardLink}" style="display:block;padding:16px 42px;text-decoration:none;color:#111111;font-size:16px;font-weight:900;letter-spacing:0.06em;text-transform:uppercase;font-family:Arial,sans-serif;">👁 View &amp; Download Full Card</a>
+            <td bgcolor="#f5c842" style="border-radius:12px;">
+              <a href="${cardLink}" style="display:block;padding:16px 42px;text-decoration:none;color:#111111;font-size:15px;font-weight:900;letter-spacing:1px;text-transform:uppercase;font-family:Arial,sans-serif;">👁 View &amp; Download Full Card</a>
             </td>
           </tr>
         </table>
-        <!-- Expiry pill -->
-        <div style="margin-top:16px;">
-          <span style="display:inline-block;background:rgba(245,200,66,0.1);border:1px solid rgba(245,200,66,0.3);border-radius:20px;padding:7px 18px;font-size:11px;color:#f5c842;font-weight:800;letter-spacing:0.06em;font-family:Arial,sans-serif;">⏳ Link expires in 12 hours</span>
-        </div>
+        <p style="margin:16px 0 0;font-size:11px;color:#f5c842;font-family:Arial,sans-serif;">⏳ Link expires in 12 hours</p>
       </td>
     </tr>
 
-    <!-- ══ FOOTER ══ -->
+    <!-- FOOTER -->
     <tr>
-      <td style="background:#071407;border:1px solid rgba(245,200,66,0.12);border-top:none;border-radius:0 0 12px 12px;padding:18px 32px 22px;text-align:center;">
-        <!-- Gold bottom bar -->
-        <div style="height:3px;background:linear-gradient(90deg,#8a6000,#d4a017,#f9d84a,#d4a017,#8a6000);border-radius:2px;margin-bottom:14px;"></div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.3);line-height:1.7;font-family:Arial,sans-serif;">This card was automatically generated by the Achievers 26' Card System.<br>© ${new Date().getFullYear()} VTESA — Ekiti State University, Ado Ekiti</div>
+      <td bgcolor="#050e05" style="padding:16px 28px 20px;text-align:center;border:1px solid #1a4a1a;border-top:none;border-radius:0 0 12px 12px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
+          <tr><td bgcolor="#d4a017" height="3" style="font-size:0;line-height:0;border-radius:2px;">&nbsp;</td></tr>
+        </table>
+        <p style="margin:0;font-size:11px;color:#4a7a4a;line-height:1.7;font-family:Arial,sans-serif;">This card was automatically generated by the Achievers 26' Card System.<br>&copy; ${new Date().getFullYear()} VTESA &mdash; Ekiti State University, Ado Ekiti</p>
       </td>
     </tr>
 
-    <!-- ══ BOTTOM GOLD BAR ══ -->
+    <!-- GOLD BOTTOM BAR -->
     <tr>
-      <td style="background:linear-gradient(90deg,#8a6000,#d4a017,#f9d84a,#f5c842,#f9d84a,#d4a017,#8a6000);height:4px;border-radius:0 0 8px 8px;font-size:0;line-height:0;">&nbsp;</td>
+      <td bgcolor="#d4a017" height="4" style="font-size:0;line-height:0;border-radius:0 0 8px 8px;">&nbsp;</td>
     </tr>
 
   </table>
@@ -440,11 +455,9 @@ async function sendEmail(fullName, cardLink, data) {
     body: JSON.stringify({
       email: {
         html: emailHTML,
-        text: `New Finalist Card submitted by ${fullName}. View & Download: ${cardLink} — Link expires in 12 hours.`,
         subject: `🎓 New Finalist Card — ${fullName} | Achievers 26'`,
         from: { name: "Achievers 26' Cards", email: process.env.SMTP_USER },
         to: [{ name: 'Admin', email: process.env.ADMIN_EMAIL }],
-        headers: { 'X-Mailer': 'Achievers26CardSystem', 'MIME-Version': '1.0' },
       }
     }),
   });
@@ -673,37 +686,54 @@ function downloadImage() {
 // ── DOWNLOAD AS PDF ───────────────────────────────────────────────────────────
 function downloadPDF() {
   var btn = document.getElementById('btn-pdf');
+  var bar = document.getElementById('action-bar');
   btn.disabled = true;
   btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg> Generating PDF...';
 
+  // Fully remove bar from layout so card reflows cleanly
+  bar.style.display = 'none';
+  document.body.style.paddingBottom = '0';
+  window.scrollTo(0, 0);
+
   var card = document.getElementById('the-card');
-  html2canvas(card, {
-    scale: 3,
-    useCORS: true,
-    allowTaint: true,
-    backgroundColor: '#111111',
-    logging: false,
-    windowWidth: card.scrollWidth,
-    windowHeight: card.scrollHeight
-  }).then(function(canvas) {
-    var imgData = canvas.toDataURL('image/png');
-    var { jsPDF } = window.jspdf;
-    var cardW = card.offsetWidth;
-    var cardH = card.offsetHeight;
-    // Portrait PDF sized to card aspect ratio
-    var pdfW = 210; // A4 width mm
-    var pdfH = Math.round((cardH / cardW) * pdfW);
-    var pdf = new jsPDF({ orientation: pdfH > pdfW ? 'portrait' : 'landscape', unit: 'mm', format: [pdfW, pdfH] });
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfW, pdfH, undefined, 'FAST');
-    pdf.save('achievers26-${safeName.replace(/\s+/g, '-').toLowerCase()}.pdf');
-    btn.disabled = false;
-    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg> Download as PDF';
-  }).catch(function(err) {
-    console.error('PDF generation failed:', err);
-    alert('PDF download failed. Please try the Image option instead.');
-    btn.disabled = false;
-    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg> Download as PDF';
-  });
+
+  // Wait for reflow after hiding bar
+  setTimeout(function() {
+    var W = card.offsetWidth;
+    var H = card.offsetHeight;
+    html2canvas(card, {
+      scale: 3,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#111111',
+      logging: false,
+      width: W,
+      height: H,
+      scrollX: 0,
+      scrollY: 0,
+      windowWidth: W + 32,
+      windowHeight: H + 32
+    }).then(function(canvas) {
+      bar.style.display = '';
+      document.body.style.paddingBottom = '';
+      var imgData = canvas.toDataURL('image/png');
+      var { jsPDF } = window.jspdf;
+      var pdfW = 210;
+      var pdfH = Math.round((H / W) * pdfW);
+      var pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [pdfW, pdfH] });
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfW, pdfH, undefined, 'NONE');
+      pdf.save('achievers26-${safeName.replace(/\s+/g, '-').toLowerCase()}.pdf');
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg> Download as PDF';
+    }).catch(function(err) {
+      bar.style.display = '';
+      document.body.style.paddingBottom = '';
+      console.error('PDF generation failed:', err);
+      alert('PDF download failed. Please use Download as Image instead.');
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg> Download as PDF';
+    });
+  }, 300);
 }
 <\/script>
 
