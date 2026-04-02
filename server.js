@@ -222,4 +222,4 @@ app.post('/submit', upload.single('photo'), async (req, res) => {
   }
 });
 
-app.listen(PORT, () => console.log(`\n✅  Achievers 26' server running → http://localhost:${PORT}\n`));
+app.listen(PORT, () => console.log(`\n✅  Achievers 26' server running → http://localhost:${PORT}\n`)); 
