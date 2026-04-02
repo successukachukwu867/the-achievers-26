@@ -264,13 +264,14 @@ function buildEmailHTML(fullName, cardLink, data, dob) {
     ['🎯 Hobbies',            data.hobbies],
   ];
 
+  // Gmail-safe: light backgrounds, dark text. bgcolor on <td> is the only reliable way.
   const tableRows = allRows.map(([k, v], i) => `
-    <tr bgcolor="${i % 2 === 0 ? '#0e3a0e' : '#0a2e0a'}">
-      <td width="44%" style="padding:10px 14px;border-bottom:1px solid #1e6b1e;">
-        <span style="color:#90d490;font-size:12px;font-weight:bold;font-family:Arial,sans-serif;">${esc(k)}</span>
+    <tr bgcolor="${i % 2 === 0 ? '#f0faf0' : '#ffffff'}">
+      <td width="44%" style="padding:10px 14px;border-bottom:1px solid #c8e8c8;">
+        <span style="color:#1a6b1a;font-size:12px;font-weight:bold;font-family:Arial,sans-serif;">${esc(k)}</span>
       </td>
-      <td style="padding:10px 14px;border-bottom:1px solid #1e6b1e;">
-        <span style="color:#ffffff;font-size:13px;font-weight:bold;font-family:Arial,sans-serif;">${esc(String(v || '—'))}</span>
+      <td style="padding:10px 14px;border-bottom:1px solid #c8e8c8;">
+        <span style="color:#111111;font-size:13px;font-weight:bold;font-family:Arial,sans-serif;">${esc(String(v || '—'))}</span>
       </td>
     </tr>`).join('');
 
@@ -281,26 +282,26 @@ function buildEmailHTML(fullName, cardLink, data, dob) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>New Finalist Card — ${esc(fullName)}</title>
 </head>
-<body style="margin:0;padding:0;background-color:#071407;" bgcolor="#071407">
+<body style="margin:0;padding:0;background-color:#f4f4f4;" bgcolor="#f4f4f4">
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#071407">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f4f4f4">
 <tr><td align="center" style="padding:24px 12px 40px;">
 
   <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;">
 
     <!-- GOLD TOP BAR -->
     <tr>
-      <td bgcolor="#d4a017" height="5" style="font-size:0;line-height:0;border-radius:12px 12px 0 0;">&nbsp;</td>
+      <td bgcolor="#d4a017" height="5" style="font-size:0;line-height:0;">&nbsp;</td>
     </tr>
 
-    <!-- HEADER -->
+    <!-- HEADER — dark green, Gmail renders bgcolor reliably here -->
     <tr>
-      <td bgcolor="#1a5c1a" style="padding:26px 28px 22px;border-left:1px solid #2e8b2e;border-right:1px solid #2e8b2e;">
+      <td bgcolor="#1a5c1a" style="padding:26px 28px 22px;">
 
         <!-- Logos row -->
         <table cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <!-- EKSU logo first -->
+            <!-- EKSU logo -->
             <td style="padding-right:10px;">
               <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
@@ -310,7 +311,7 @@ function buildEmailHTML(fullName, cardLink, data, dob) {
                 </tr>
               </table>
             </td>
-            <!-- VTESA logo second -->
+            <!-- VTESA logo -->
             <td style="padding-right:14px;">
               <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
@@ -330,26 +331,27 @@ function buildEmailHTML(fullName, cardLink, data, dob) {
 
         <!-- Divider -->
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:18px 0 16px;">
-          <tr><td bgcolor="#2e8b2e" height="1" style="font-size:0;line-height:0;">&nbsp;</td></tr>
+          <tr><td bgcolor="#f5c842" height="1" style="font-size:0;line-height:0;">&nbsp;</td></tr>
         </table>
 
         <!-- Title -->
-        <p style="margin:0 0 4px;font-family:Georgia,'Times New Roman',serif;font-size:38px;color:#ffffff;font-style:italic;">The Achievers 26'</p>
+        <p style="margin:0 0 8px;font-family:Georgia,'Times New Roman',serif;font-size:36px;color:#ffffff;font-style:italic;">The Achievers 26'</p>
+        <!-- CLASS OF 26 badge — dark green matching design colours (was purple #6600cc) -->
         <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:18px;">
           <tr>
-            <td bgcolor="#6600cc" style="padding:5px 20px;border-radius:20px;border:1px solid #f5c842;">
+            <td bgcolor="#0e4a0e" style="padding:5px 20px;border-radius:20px;border:1px solid #f5c842;">
               <span style="font-size:12px;font-weight:bold;color:#f5c842;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">CLASS OF 26</span>
             </td>
           </tr>
         </table>
 
-        <!-- New card banner -->
+        <!-- New card banner — white bg so text is always visible in Gmail -->
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <td bgcolor="#0e3a0e" style="padding:16px 20px;border-radius:10px;border:1px solid #f5c842;">
-              <p style="margin:0 0 6px;font-size:10px;font-weight:bold;color:#f5c842;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">🎉 New Finalist Card Submitted</p>
-              <p style="margin:0 0 4px;font-size:24px;font-weight:bold;color:#ffffff;font-family:Arial,sans-serif;">${esc(fullName)}</p>
-              <p style="margin:0;font-size:12px;color:#90d490;font-family:Arial,sans-serif;">aka <em style="color:#f9d84a;">${esc(data.nickname)}</em> &nbsp;&bull;&nbsp; ${esc(data.socialHandle)}</p>
+            <td bgcolor="#ffffff" style="padding:16px 20px;border-radius:10px;border:2px solid #f5c842;">
+              <p style="margin:0 0 6px;font-size:10px;font-weight:bold;color:#1a6b1a;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">🎉 New Finalist Card Submitted</p>
+              <p style="margin:0 0 4px;font-size:24px;font-weight:bold;color:#111111;font-family:Arial,sans-serif;">${esc(fullName)}</p>
+              <p style="margin:0;font-size:12px;color:#444444;font-family:Arial,sans-serif;">aka <em style="color:#b8860b;font-weight:bold;">${esc(data.nickname)}</em> &nbsp;&bull;&nbsp; ${esc(data.socialHandle)}</p>
             </td>
           </tr>
         </table>
@@ -357,16 +359,14 @@ function buildEmailHTML(fullName, cardLink, data, dob) {
       </td>
     </tr>
 
-    <!-- QUOTE BLOCK -->
+    <!-- QUOTE BLOCK — white bg with gold left border accent -->
     <tr>
-      <td bgcolor="#0a2a0a" style="padding:0;border-left:1px solid #2e8b2e;border-right:1px solid #2e8b2e;">
+      <td bgcolor="#ffffff" style="padding:0;border-left:4px solid #f5c842;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <td bgcolor="#0a2a0a" width="4" style="font-size:0;">&nbsp;</td>
-            <td bgcolor="#f5c842" width="4" style="font-size:0;">&nbsp;</td>
-            <td bgcolor="#0a2a0a" style="padding:16px 18px;">
-              <p style="margin:0 0 6px;font-size:10px;font-weight:bold;color:#f5c842;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">💬 Favourite Quote</p>
-              <p style="margin:0;font-size:14px;color:#ffffff;font-style:italic;line-height:1.7;font-family:Georgia,serif;">"${esc(data.favQuote)}"</p>
+            <td bgcolor="#ffffff" style="padding:18px 20px;">
+              <p style="margin:0 0 6px;font-size:10px;font-weight:bold;color:#1a6b1a;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">💬 Favourite Quote</p>
+              <p style="margin:0;font-size:14px;color:#333333;font-style:italic;line-height:1.7;font-family:Georgia,serif;">"${esc(data.favQuote)}"</p>
             </td>
           </tr>
         </table>
@@ -375,48 +375,49 @@ function buildEmailHTML(fullName, cardLink, data, dob) {
 
     <!-- DETAILS HEADER -->
     <tr>
-      <td bgcolor="#0c320c" style="padding:10px 18px;border-left:1px solid #2e8b2e;border-right:1px solid #2e8b2e;border-bottom:1px solid #2e8b2e;">
+      <td bgcolor="#1a5c1a" style="padding:10px 18px;">
         <span style="font-size:10px;font-weight:bold;color:#f5c842;letter-spacing:2px;text-transform:uppercase;font-family:Arial,sans-serif;">📋 Finalist Details</span>
       </td>
     </tr>
 
-    <!-- DATA TABLE -->
+    <!-- DATA TABLE — light rows, dark text, Gmail-safe -->
     <tr>
-      <td style="padding:0;border-left:1px solid #2e8b2e;border-right:1px solid #2e8b2e;">
+      <td style="padding:0;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0">
           ${tableRows}
         </table>
       </td>
     </tr>
 
-    <!-- CTA SECTION -->
+    <!-- CTA SECTION — white bg -->
     <tr>
-      <td bgcolor="#0e4a0e" style="padding:28px 32px;text-align:center;border-left:1px solid #2e8b2e;border-right:1px solid #2e8b2e;">
-        <p style="margin:0 0 20px;font-size:13px;color:#c8e8c8;line-height:1.7;font-family:Arial,sans-serif;">The full finalist card is ready to view and download.<br>⏳ This link <strong style="color:#f5c842;">expires in 12 hours</strong> — download it now!</p>
+      <td bgcolor="#ffffff" style="padding:28px 32px;text-align:center;border-top:3px solid #1a5c1a;">
+        <p style="margin:0 0 6px;font-size:16px;font-weight:bold;color:#1a5c1a;font-family:Arial,sans-serif;">The full finalist card is ready!</p>
+        <p style="margin:0 0 20px;font-size:13px;color:#555555;line-height:1.7;font-family:Arial,sans-serif;">View and download the card before the link expires.<br>⏳ This link <strong style="color:#c8900a;">expires in 12 hours</strong> — download it now!</p>
         <table cellpadding="0" cellspacing="0" border="0" align="center">
           <tr>
-            <td bgcolor="#f5c842" style="border-radius:12px;">
-              <a href="${cardLink}" style="display:block;padding:16px 42px;text-decoration:none;color:#111111;font-size:15px;font-weight:900;letter-spacing:1px;text-transform:uppercase;font-family:Arial,sans-serif;">👁 View &amp; Download Full Card</a>
+            <td bgcolor="#1a5c1a" style="border-radius:12px;">
+              <a href="${cardLink}" style="display:block;padding:16px 42px;text-decoration:none;color:#f5c842;font-size:15px;font-weight:900;letter-spacing:1px;text-transform:uppercase;font-family:Arial,sans-serif;">👁 View &amp; Download Full Card</a>
             </td>
           </tr>
         </table>
-        <p style="margin:16px 0 0;font-size:11px;color:#f5c842;font-family:Arial,sans-serif;">⏳ Link expires in 12 hours</p>
+        <p style="margin:16px 0 0;font-size:11px;color:#888888;font-family:Arial,sans-serif;">⏳ Link expires in 12 hours</p>
       </td>
     </tr>
 
     <!-- FOOTER -->
     <tr>
-      <td bgcolor="#050e05" style="padding:16px 28px 20px;text-align:center;border:1px solid #1a4a1a;border-top:none;border-radius:0 0 12px 12px;">
+      <td bgcolor="#f0faf0" style="padding:16px 28px 20px;text-align:center;border-top:1px solid #c8e8c8;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:12px;">
-          <tr><td bgcolor="#d4a017" height="3" style="font-size:0;line-height:0;border-radius:2px;">&nbsp;</td></tr>
+          <tr><td bgcolor="#d4a017" height="3" style="font-size:0;line-height:0;">&nbsp;</td></tr>
         </table>
-        <p style="margin:0;font-size:11px;color:#4a7a4a;line-height:1.7;font-family:Arial,sans-serif;">This card was automatically generated by the Achievers 26' Card System.<br>&copy; ${new Date().getFullYear()} VTESA &mdash; Ekiti State University, Ado Ekiti</p>
+        <p style="margin:0;font-size:11px;color:#666666;line-height:1.7;font-family:Arial,sans-serif;">This card was automatically generated by the Achievers 26' Card System.<br>&copy; ${new Date().getFullYear()} VTESA &mdash; Ekiti State University, Ado Ekiti</p>
       </td>
     </tr>
 
     <!-- GOLD BOTTOM BAR -->
     <tr>
-      <td bgcolor="#d4a017" height="4" style="font-size:0;line-height:0;border-radius:0 0 8px 8px;">&nbsp;</td>
+      <td bgcolor="#d4a017" height="4" style="font-size:0;line-height:0;">&nbsp;</td>
     </tr>
 
   </table>
