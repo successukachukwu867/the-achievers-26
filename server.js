@@ -8,6 +8,17 @@ const fs         = require('fs');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
+// ── Pre-load logos as base64 so html2canvas never needs to fetch them ─────────
+function loadLogoBase64(filename) {
+  try {
+    const p = path.join(__dirname, 'public', filename);
+    if (fs.existsSync(p)) return 'data:image/png;base64,' + fs.readFileSync(p).toString('base64');
+  } catch(e) {}
+  return '\;
+}
+const EKSU_LOGO_B64  = loadLogoBase64('eksu-logo.png');
+const VTESA_LOGO_B64 = loadLogoBase64('vtesa-logo.png');
+
 // ── Uploads folder ──────────────────────────────────────────────────────────
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir);
@@ -70,9 +81,9 @@ function buildCardHTML(data, photoBase64, mime) {
   .bg-ruler-bottom { position: absolute; bottom: 0; left: 0; right: 0; height: 6px; background: repeating-linear-gradient(90deg, transparent 0px, transparent 8px, rgba(245,200,66,0.22) 8px, rgba(245,200,66,0.22) 10px); }
   .bg-lines { position: absolute; inset: 0; background-image: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.013) 40px, rgba(255,255,255,0.013) 41px); }
   .bg-sparkle { position: absolute; border-radius: 50%; background: radial-gradient(circle, #f9d84a 0%, transparent 70%); }
-  .gold-blob-tr { position: absolute; top: -15px; right: -15px; width: 28vw; max-width: 150px; height: 28vw; max-height: 150px; background: radial-gradient(ellipse at 40% 40%, #f9d84a 0%, #d4a017 45%, #8a6000 85%, transparent 100%); border-radius: 50% 20% 60% 30%; opacity: 0.95; z-index: 1; }
-  .gold-blob-bl { position: absolute; bottom: -20px; left: -20px; width: 34vw; max-width: 170px; height: 34vw; max-height: 170px; background: radial-gradient(ellipse at 40% 40%, #f9d84a 0%, #d4a017 45%, #8a6000 85%, transparent 100%); border-radius: 40% 60% 30% 70%; opacity: 0.9; z-index: 1; }
-  .gold-blob-br { position: absolute; bottom: -10px; right: -10px; width: 22vw; max-width: 110px; height: 18vw; max-height: 90px; background: radial-gradient(ellipse at center, #f9d84a 0%, #d4a017 50%, transparent 100%); border-radius: 60% 30% 50% 40%; opacity: 0.7; z-index: 1; }
+  .gold-blob-tr { position: absolute; top: -15px; right: -15px; width: 140px; height: 140px; background: radial-gradient(ellipse at 40% 40%, #f9d84a 0%, #d4a017 45%, #8a6000 85%, transparent 100%); border-radius: 50% 20% 60% 30%; opacity: 0.95; z-index: 1; }
+  .gold-blob-bl { position: absolute; bottom: -20px; left: -20px; width: 160px; height: 160px; background: radial-gradient(ellipse at 40% 40%, #f9d84a 0%, #d4a017 45%, #8a6000 85%, transparent 100%); border-radius: 40% 60% 30% 70%; opacity: 0.9; z-index: 1; }
+  .gold-blob-br { position: absolute; bottom: -10px; right: -10px; width: 105px; height: 85px; background: radial-gradient(ellipse at center, #f9d84a 0%, #d4a017 50%, transparent 100%); border-radius: 60% 30% 50% 40%; opacity: 0.7; z-index: 1; }
   .bg-gear-tl { position: absolute; top: 60px; left: -40px; width: 140px; height: 140px; opacity: 0.09; }
   .bg-gear-mr { position: absolute; top: 44%; right: -28px; width: 110px; height: 110px; opacity: 0.1; }
   .bg-gear-bl2 { position: absolute; bottom: 130px; left: 16px; width: 75px; height: 75px; opacity: 0.1; }
@@ -94,7 +105,7 @@ function buildCardHTML(data, photoBase64, mime) {
   .divider-dots { border: none; border-top: 2px dashed rgba(245,200,66,0.4); margin: 0 14px 4px; position: relative; z-index: 2; }
   .title-section { position: relative; z-index: 2; text-align: center; padding: 6px 14px 4px; }
   .script-title { font-family: 'Dancing Script', cursive; font-size: clamp(34px, 10vw, 52px); color: #fff; line-height: 1.1; text-shadow: 0 0 20px rgba(255,230,100,0.9), 0 0 50px rgba(255,220,60,0.6), 0 0 80px rgba(255,200,0,0.3), 2px 2px 8px rgba(0,0,0,0.5); }
-  .class-badge { display: inline-block; background: linear-gradient(135deg, #1a0050, #3d0099, #6600cc, #3d0099, #1a0050); color: #f5c842; font-size: clamp(10px, 2.8vw, 14px); font-weight: 900; letter-spacing: 0.1em; padding: 4px 22px; border-radius: 20px; margin-top: 3px; text-transform: uppercase; box-shadow: 0 2px 12px rgba(102,0,204,0.6), 0 0 0 1.5px rgba(245,200,66,0.6); }
+  .class-badge { display: inline-block; background: linear-gradient(135deg, #0a3a0a 0%, #1a6b1a 40%, #0e4a0e 60%, #0a3a0a 100%); color: #f5c842; font-size: clamp(10px, 2.8vw, 14px); font-weight: 900; letter-spacing: 0.1em; padding: 4px 22px; border-radius: 20px; margin-top: 3px; text-transform: uppercase; border: 2px solid #f5c842; box-shadow: 0 0 0 1px #d4a017, 0 2px 14px rgba(212,160,23,0.5); text-shadow: 0 0 8px rgba(245,200,66,0.6); }
   .body { position: relative; z-index: 2; display: flex; gap: 10px; padding: 10px 14px 0; align-items: flex-start; }
   .left-col { width: clamp(180px, 50%, 240px); flex-shrink: 0; display: flex; flex-direction: column; align-items: center; position: relative; border-radius: 10px; overflow: hidden; }
   .left-col::before { content: ''; position: absolute; inset: -10px; z-index: 0; border-left: 2px solid rgba(245,200,66,0.35); border-right: 1px solid rgba(245,200,66,0.15); background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(245,200,66,0.18) 0%, transparent 65%), radial-gradient(ellipse 60% 80% at 20% 80%, rgba(245,200,66,0.12) 0%, transparent 60%), repeating-linear-gradient(-45deg, transparent 0px, transparent 14px, rgba(255,255,255,0.025) 14px, rgba(255,255,255,0.025) 15px), repeating-linear-gradient(45deg, transparent 0px, transparent 28px, rgba(245,200,66,0.04) 28px, rgba(245,200,66,0.04) 29px); pointer-events: none; }
@@ -178,11 +189,11 @@ function buildCardHTML(data, photoBase64, mime) {
     <div class="logos">
       <!-- Logo 1: EKSU first -->
       <div class="logo-circle">
-        <img src="https://the-achievers-26-production.up.railway.app/eksu-logo.png" alt="EKSU" style="width:36px;height:36px;object-fit:contain;display:block;">
+        <img src="${EKSU_LOGO_B64}" alt="EKSU" style="width:36px;height:36px;object-fit:contain;display:block;">
       </div>
       <!-- Logo 2: VTESA second -->
       <div class="logo-circle">
-        <img src="https://the-achievers-26-production.up.railway.app/vtesa-logo.png" alt="VTESA" style="width:36px;height:36px;object-fit:contain;display:block;">
+        <img src="${VTESA_LOGO_B64}" alt="VTESA" style="width:36px;height:36px;object-fit:contain;display:block;">
       </div>
     </div>
     <div class="header-text">
@@ -661,31 +672,49 @@ app.get('/card/:token', (req, res) => {
 // ── DOWNLOAD AS IMAGE ─────────────────────────────────────────────────────────
 function downloadImage() {
   var btn = document.getElementById('btn-image');
+  var bar = document.getElementById('action-bar');
   btn.disabled = true;
   btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg> Generating...';
 
-  var card = document.getElementById('the-card');
-  html2canvas(card, {
-    scale: 3,
-    useCORS: true,
-    allowTaint: true,
-    backgroundColor: '#111111',
-    logging: false,
-    windowWidth: card.scrollWidth,
-    windowHeight: card.scrollHeight
-  }).then(function(canvas) {
-    var link = document.createElement('a');
-    link.download = 'achievers26-${safeName.replace(/\s+/g, '-').toLowerCase()}.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-    btn.disabled = false;
-    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg> Download as Image';
-  }).catch(function(err) {
-    console.error('Image capture failed:', err);
-    alert('Image download failed. Please try the PDF option instead.');
-    btn.disabled = false;
-    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg> Download as Image';
-  });
+  bar.style.display = 'none';
+  document.body.style.padding = '0';
+  window.scrollTo(0, 0);
+
+  setTimeout(function() {
+    var card = document.getElementById('the-card');
+    var W = card.offsetWidth;
+    var H = card.offsetHeight;
+    html2canvas(card, {
+      scale: 3,
+      useCORS: true,
+      allowTaint: true,
+      foreignObjectRendering: false,
+      backgroundColor: null,
+      imageTimeout: 30000,
+      logging: false,
+      width: W,
+      height: H,
+      scrollX: -window.scrollX,
+      scrollY: -window.scrollY,
+      windowWidth: document.documentElement.offsetWidth,
+      windowHeight: document.documentElement.offsetHeight,
+    }).then(function(canvas) {
+      bar.style.display = '';
+      document.body.style.padding = '';
+      var link = document.createElement('a');
+      link.download = 'achievers26-${safeName.replace(/\s+/g, '-').toLowerCase()}.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg> Download as Image';
+    }).catch(function(err) {
+      bar.style.display = '';
+      document.body.style.padding = '';
+      console.error('Image capture failed:', err);
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg> Download as Image';
+    });
+  }, 600);
 }
 
 // ── DOWNLOAD AS PDF ───────────────────────────────────────────────────────────
@@ -695,32 +724,31 @@ function downloadPDF() {
   btn.disabled = true;
   btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg> Generating PDF...';
 
-  // Fully remove bar from layout so card reflows cleanly
   bar.style.display = 'none';
-  document.body.style.paddingBottom = '0';
+  document.body.style.padding = '0';
   window.scrollTo(0, 0);
 
-  var card = document.getElementById('the-card');
-
-  // Wait for reflow after hiding bar
   setTimeout(function() {
+    var card = document.getElementById('the-card');
     var W = card.offsetWidth;
     var H = card.offsetHeight;
     html2canvas(card, {
       scale: 3,
       useCORS: true,
       allowTaint: true,
-      backgroundColor: '#111111',
+      foreignObjectRendering: false,
+      backgroundColor: null,
+      imageTimeout: 30000,
       logging: false,
       width: W,
       height: H,
-      scrollX: 0,
-      scrollY: 0,
-      windowWidth: W + 32,
-      windowHeight: H + 32
+      scrollX: -window.scrollX,
+      scrollY: -window.scrollY,
+      windowWidth: document.documentElement.offsetWidth,
+      windowHeight: document.documentElement.offsetHeight,
     }).then(function(canvas) {
       bar.style.display = '';
-      document.body.style.paddingBottom = '';
+      document.body.style.padding = '';
       var imgData = canvas.toDataURL('image/png');
       var { jsPDF } = window.jspdf;
       var pdfW = 210;
@@ -732,13 +760,12 @@ function downloadPDF() {
       btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg> Download as PDF';
     }).catch(function(err) {
       bar.style.display = '';
-      document.body.style.paddingBottom = '';
+      document.body.style.padding = '';
       console.error('PDF generation failed:', err);
-      alert('PDF download failed. Please use Download as Image instead.');
       btn.disabled = false;
       btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg> Download as PDF';
     });
-  }, 300);
+  }, 600);
 }
 <\/script>
 
