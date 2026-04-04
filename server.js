@@ -14,7 +14,7 @@ function loadLogoBase64(filename) {
     const p = path.join(__dirname, 'public', filename);
     if (fs.existsSync(p)) return 'data:image/png;base64,' + fs.readFileSync(p).toString('base64');
   } catch(e) {}
-  return '\;
+  return '';
 }
 const EKSU_LOGO_B64  = loadLogoBase64('eksu-logo.png');
 const VTESA_LOGO_B64 = loadLogoBase64('vtesa-logo.png');
