@@ -747,12 +747,6 @@ function saveImage() {
 function savePDF() {
   window.print();
 }
-    }).catch(function(err) {
-      console.error(err);
-      btn.disabled = false;
-      btn.innerHTML = '🖼 Download as Image';
-    });
-}
 <\/script>
 
 
