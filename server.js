@@ -599,9 +599,6 @@ app.get('/card/:token', (req, res) => {
 
   // Inject the full action bar (countdown + both download buttons) before </body>
   const actionBar = `
-<!-- ── dom-to-image-more for downloads ── -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image-more/2.8.0/dom-to-image-more.min.js"><\/script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"><\/script>
 
 <!-- ── ACTION BAR ── -->
 <style>
@@ -686,7 +683,9 @@ app.get('/card/:token', (req, res) => {
   }
   @media print {
     #action-bar { display: none !important; }
-    body { padding-bottom: 0 !important; }
+    body { padding: 0 !important; margin: 0 !important; background: #111 !important; }
+    .card { box-shadow: none !important; margin: 0 auto !important; }
+    @page { margin: 0; size: auto; }
   }
 </style>
 
@@ -697,13 +696,11 @@ app.get('/card/:token', (req, res) => {
     <div id="countdown-warning">⚠️ Expiring soon — download your card now!</div>
   </div>
   <div id="btn-row">
-    <button class="dl-btn" id="btn-image" onclick="downloadImage()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-      Download as Image
+    <button class="dl-btn" id="btn-image" onclick="saveImage()">
+      🖼 Save as Image
     </button>
-    <button class="dl-btn" id="btn-pdf" onclick="downloadPDF()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>
-      Download as PDF
+    <button class="dl-btn" id="btn-pdf" onclick="savePDF()">
+      📄 Save as PDF
     </button>
   </div>
 </div>
@@ -732,8 +729,6 @@ app.get('/card/:token', (req, res) => {
     var m = Math.floor((remaining % 3600000) / 60000);
     var s = Math.floor((remaining % 60000) / 1000);
     timerEl.textContent = pad(h) + ':' + pad(m) + ':' + pad(s);
-
-    // Warn when under 30 minutes
     if (remaining < 30 * 60 * 1000) {
       timerEl.classList.add('urgent');
       warnEl.classList.add('show');
@@ -743,61 +738,19 @@ app.get('/card/:token', (req, res) => {
   tick();
 })();
 
-// ── DOWNLOAD AS IMAGE ─────────────────────────────────────────────────────────
-function downloadImage() {
-  var btn = document.getElementById('btn-image');
-  var bar = document.getElementById('action-bar');
-  btn.disabled = true;
-  btn.innerHTML = '⏳ Saving...';
-  bar.style.display = 'none';
-  window.scrollTo(0, 0);
-
-  var card = document.getElementById('the-card');
-  domtoimage.toPng(card, { scale: 3, bgcolor: null })
-    .then(function(dataUrl) {
-      bar.style.display = '';
-      var link = document.createElement('a');
-      link.download = 'achievers26-${safeName.replace(/\s+/g, '-').toLowerCase()}.png';
-      link.href = dataUrl;
-      link.click();
-      btn.disabled = false;
-      btn.innerHTML = '🖼 Download as Image';
-    }).catch(function(err) {
-      bar.style.display = '';
-      console.error(err);
-      btn.disabled = false;
-      btn.innerHTML = '🖼 Download as Image';
-    });
+// ── SAVE AS IMAGE — opens clean card page, user long-presses to save ──────────
+function saveImage() {
+  window.open('/card-clean/${req.params.token}', '_blank');
 }
 
-// ── DOWNLOAD AS PDF ───────────────────────────────────────────────────────────
-function downloadPDF() {
-  var btn = document.getElementById('btn-pdf');
-  var bar = document.getElementById('action-bar');
-  btn.disabled = true;
-  btn.innerHTML = '⏳ Saving...';
-  bar.style.display = 'none';
-  window.scrollTo(0, 0);
-
-  var card = document.getElementById('the-card');
-  var W = card.offsetWidth;
-  var H = card.offsetHeight;
-  domtoimage.toPng(card, { scale: 3, bgcolor: null })
-    .then(function(dataUrl) {
-      bar.style.display = '';
-      var { jsPDF } = window.jspdf;
-      var pdfW = 210;
-      var pdfH = Math.round((H / W) * pdfW);
-      var pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [pdfW, pdfH] });
-      pdf.addImage(dataUrl, 'PNG', 0, 0, pdfW, pdfH, undefined, 'NONE');
-      pdf.save('achievers26-${safeName.replace(/\s+/g, '-').toLowerCase()}.pdf');
-      btn.disabled = false;
-      btn.innerHTML = '📄 Download as PDF';
+// ── SAVE AS PDF — triggers browser print dialog (Save as PDF on mobile) ───────
+function savePDF() {
+  window.print();
+}
     }).catch(function(err) {
-      bar.style.display = '';
       console.error(err);
       btn.disabled = false;
-      btn.innerHTML = '📄 Download as PDF';
+      btn.innerHTML = '🖼 Download as Image';
     });
 }
 <\/script>
@@ -807,6 +760,15 @@ function downloadPDF() {
 
   const withActions = entry.html.replace('</body>', actionBar + '\n</body>');
   res.send(withActions);
+});
+
+// ── Clean card page — just the card, no action bar, for saving as image ───────
+app.get('/card-clean/:token', (req, res) => {
+  const entry = getCard(req.params.token);
+  if (!entry) return res.status(404).send('Expired');
+  // Inject a small tip overlay
+  const tip = `<style>body{background:#111;}.save-tip{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.75);color:#f5c842;font-family:Arial,sans-serif;font-size:13px;padding:10px 18px;border-radius:20px;white-space:nowrap;z-index:999;pointer-events:none;}@media print{.save-tip{display:none!important;}body{padding:0!important;}@page{margin:0;size:auto;}}</style><div class="save-tip">📸 Long-press the card → Save Image &nbsp;|&nbsp; Or share → Print to save as PDF</div>`;
+  res.send(entry.html.replace('</body>', tip + '\n</body>'));
 });
 
 
