@@ -597,7 +597,7 @@ app.get('/card/:token', (req, res) => {
   const expiresAt = entry.expires;
   const safeName = esc(entry.name);
 
-  // Inject the full action bar (countdown + both download buttons) before </body>
+  // Inject the full action bar (countdown + notice) before </body>
   const actionBar = `
 
 <!-- ── ACTION BAR ── -->
@@ -607,13 +607,10 @@ app.get('/card/:token', (req, res) => {
     position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
     background: linear-gradient(135deg, #0e4a0e, #0a3a0a);
     border-top: 2px solid rgba(245,200,66,0.4);
-    padding: 10px 16px 12px;
+    padding: 10px 16px 14px;
     font-family: 'Montserrat', sans-serif;
     box-shadow: 0 -6px 30px rgba(0,0,0,0.6);
-  }
-  #countdown-row {
     text-align: center;
-    margin-bottom: 10px;
   }
   #countdown-label {
     font-size: 11px;
@@ -640,77 +637,37 @@ app.get('/card/:token', (req, res) => {
     display: none;
   }
   #countdown-warning.show { display: block; }
-  #btn-row {
-    display: flex;
-    gap: 10px;
-  }
-  .dl-btn {
-    flex: 1;
-    padding: 12px 10px;
-    border: none;
+  #save-notice {
+    margin-top: 8px;
+    background: rgba(245,200,66,0.12);
+    border: 1px solid rgba(245,200,66,0.35);
     border-radius: 10px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 13px;
-    font-weight: 800;
-    cursor: pointer;
-    letter-spacing: 0.03em;
-    transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: #f5c842;
+    font-weight: 700;
+    line-height: 1.5;
   }
-  .dl-btn:active { transform: scale(0.97); }
-  .dl-btn:disabled { opacity: 0.55; cursor: not-allowed; }
-  #btn-image {
-    background: linear-gradient(135deg, #2a8a2a, #1a6b1a);
-    color: #fff;
-    border: 1.5px solid rgba(245,200,66,0.3);
-    box-shadow: 0 4px 14px rgba(0,0,0,0.35);
-  }
-  #btn-image:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
-  #btn-pdf {
-    background: linear-gradient(135deg, #f5c842, #d4a017);
-    color: #111;
-    box-shadow: 0 4px 14px rgba(212,160,23,0.35);
-  }
-  #btn-pdf:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,160,23,0.5); }
-  /* Push card up so it's not hidden behind bar */
-  body { padding-bottom: 120px !important; }
-  @media (max-width: 380px) {
-    .dl-btn { font-size: 12px; padding: 11px 6px; }
-    #countdown-timer { font-size: 17px; }
-  }
+  body { padding-bottom: 150px !important; }
   @media print {
     #action-bar { display: none !important; }
-    body { padding: 0 !important; margin: 0 !important; background: #111 !important; }
-    .card { box-shadow: none !important; margin: 0 auto !important; }
+    body { padding-bottom: 0 !important; }
     @page { margin: 0; size: auto; }
   }
 </style>
 
 <div id="action-bar">
-  <div id="countdown-row">
-    <div id="countdown-label">⏳ Link expires in</div>
-    <div id="countdown-timer">--:--:--</div>
-    <div id="countdown-warning">⚠️ Expiring soon — download your card now!</div>
-  </div>
-  <div id="btn-row">
-    <button class="dl-btn" id="btn-image" onclick="saveImage()">
-      🖼 Save as Image
-    </button>
-    <button class="dl-btn" id="btn-pdf" onclick="savePDF()">
-      📄 Save as PDF
-    </button>
-  </div>
+  <div id="countdown-label">⏳ Link expires in</div>
+  <div id="countdown-timer">--:--:--</div>
+  <div id="countdown-warning">⚠️ Expiring soon — save your card now!</div>
+  <div id="save-notice">📌 To save: <strong>Long-press the card above</strong> → tap <em>"Save image"</em> or <em>"Download image"</em></div>
 </div>
 
 <script>
-// ── COUNTDOWN ─────────────────────────────────────────────────────────────────
 (function() {
   var expiresAt = ${expiresAt};
-  var timerEl   = document.getElementById('countdown-timer');
-  var warnEl    = document.getElementById('countdown-warning');
+  var timerEl = document.getElementById('countdown-timer');
+  var warnEl  = document.getElementById('countdown-warning');
 
   function pad(n) { return String(n).padStart(2, '0'); }
 
@@ -720,9 +677,7 @@ app.get('/card/:token', (req, res) => {
       timerEl.textContent = '00:00:00';
       timerEl.classList.add('urgent');
       warnEl.classList.add('show');
-      warnEl.textContent = '❌ This link has now expired. Please contact the admin.';
-      document.getElementById('btn-image').disabled = true;
-      document.getElementById('btn-pdf').disabled = true;
+      warnEl.textContent = '❌ This link has now expired.';
       return;
     }
     var h = Math.floor(remaining / 3600000);
@@ -737,16 +692,6 @@ app.get('/card/:token', (req, res) => {
   }
   tick();
 })();
-
-// ── SAVE AS IMAGE — opens clean card page, user long-presses to save ──────────
-function saveImage() {
-  window.open('/card-clean/${req.params.token}', '_blank');
-}
-
-// ── SAVE AS PDF — triggers browser print dialog (Save as PDF on mobile) ───────
-function savePDF() {
-  window.print();
-}
 <\/script>
 
 
