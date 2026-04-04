@@ -23,17 +23,30 @@ const VTESA_LOGO_B64 = loadLogoBase64('vtesa-logo.png');
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir);
 
-// ── Temp cards store (24hr expiry) ───────────────────────────────────────────
+// ── Temp cards store — disk-backed so server restarts don't wipe them ────────
 const cardsDir = path.join(__dirname, 'cards');
 if (!fs.existsSync(cardsDir)) fs.mkdirSync(cardsDir);
-const cardStore = new Map(); // token -> { html, name, expires }
 
 function saveCard(html, name) {
   const token = crypto.randomBytes(24).toString('hex');
   const expires = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
-  cardStore.set(token, { html, name, expires });
-  setTimeout(() => cardStore.delete(token), 24 * 60 * 60 * 1000);
+  const file = path.join(cardsDir, `${token}.json`);
+  fs.writeFileSync(file, JSON.stringify({ html, name, expires }));
+  // Schedule cleanup
+  setTimeout(() => { try { fs.unlinkSync(file); } catch(e) {} }, 24 * 60 * 60 * 1000);
   return token;
+}
+
+function getCard(token) {
+  // Sanitize token — only hex chars allowed
+  if (!/^[a-f0-9]+$/.test(token)) return null;
+  const file = path.join(cardsDir, `${token}.json`);
+  try {
+    if (!fs.existsSync(file)) return null;
+    const entry = JSON.parse(fs.readFileSync(file, 'utf8'));
+    if (Date.now() > entry.expires) { fs.unlinkSync(file); return null; }
+    return entry;
+  } catch(e) { return null; }
 }
 
 const storage = multer.diskStorage({
@@ -71,6 +84,8 @@ function buildCardHTML(data, photoBase64, mime) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>The Achievers 26' – ${esc(data.fullName)}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Bebas+Neue&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -549,8 +564,8 @@ app.get('/', (_, res) => res.sendFile(path.join(__dirname, 'public', 'index.html
 
 // ── Card view route with countdown, Download as PDF, Download as Image ────────
 app.get('/card/:token', (req, res) => {
-  const entry = cardStore.get(req.params.token);
-  if (!entry || Date.now() > entry.expires) {
+  const entry = getCard(req.params.token);
+  if (!entry) {
     return res.status(404).send(`<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -584,8 +599,8 @@ app.get('/card/:token', (req, res) => {
 
   // Inject the full action bar (countdown + both download buttons) before </body>
   const actionBar = `
-<!-- ── html2canvas + jsPDF for downloads ── -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>
+<!-- ── dom-to-image-more for downloads ── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image-more/2.8.0/dom-to-image-more.min.js"><\/script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"><\/script>
 
 <!-- ── ACTION BAR ── -->
@@ -733,47 +748,26 @@ function downloadImage() {
   var btn = document.getElementById('btn-image');
   var bar = document.getElementById('action-bar');
   btn.disabled = true;
-  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg> Generating...';
-
+  btn.innerHTML = '⏳ Saving...';
   bar.style.display = 'none';
-  document.body.style.padding = '0';
   window.scrollTo(0, 0);
 
-  setTimeout(function() {
-    var card = document.getElementById('the-card');
-    var W = card.offsetWidth;
-    var H = card.offsetHeight;
-    html2canvas(card, {
-      scale: 3,
-      useCORS: true,
-      allowTaint: true,
-      foreignObjectRendering: false,
-      backgroundColor: null,
-      imageTimeout: 30000,
-      logging: false,
-      width: W,
-      height: H,
-      scrollX: -window.scrollX,
-      scrollY: -window.scrollY,
-      windowWidth: document.documentElement.offsetWidth,
-      windowHeight: document.documentElement.offsetHeight,
-    }).then(function(canvas) {
+  var card = document.getElementById('the-card');
+  domtoimage.toPng(card, { scale: 3, bgcolor: null })
+    .then(function(dataUrl) {
       bar.style.display = '';
-      document.body.style.padding = '';
       var link = document.createElement('a');
       link.download = 'achievers26-${safeName.replace(/\s+/g, '-').toLowerCase()}.png';
-      link.href = canvas.toDataURL('image/png');
+      link.href = dataUrl;
       link.click();
       btn.disabled = false;
-      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg> Download as Image';
+      btn.innerHTML = '🖼 Download as Image';
     }).catch(function(err) {
       bar.style.display = '';
-      document.body.style.padding = '';
-      console.error('Image capture failed:', err);
+      console.error(err);
       btn.disabled = false;
-      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg> Download as Image';
+      btn.innerHTML = '🖼 Download as Image';
     });
-  }, 600);
 }
 
 // ── DOWNLOAD AS PDF ───────────────────────────────────────────────────────────
@@ -781,50 +775,30 @@ function downloadPDF() {
   var btn = document.getElementById('btn-pdf');
   var bar = document.getElementById('action-bar');
   btn.disabled = true;
-  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg> Generating PDF...';
-
+  btn.innerHTML = '⏳ Saving...';
   bar.style.display = 'none';
-  document.body.style.padding = '0';
   window.scrollTo(0, 0);
 
-  setTimeout(function() {
-    var card = document.getElementById('the-card');
-    var W = card.offsetWidth;
-    var H = card.offsetHeight;
-    html2canvas(card, {
-      scale: 3,
-      useCORS: true,
-      allowTaint: true,
-      foreignObjectRendering: false,
-      backgroundColor: null,
-      imageTimeout: 30000,
-      logging: false,
-      width: W,
-      height: H,
-      scrollX: -window.scrollX,
-      scrollY: -window.scrollY,
-      windowWidth: document.documentElement.offsetWidth,
-      windowHeight: document.documentElement.offsetHeight,
-    }).then(function(canvas) {
+  var card = document.getElementById('the-card');
+  var W = card.offsetWidth;
+  var H = card.offsetHeight;
+  domtoimage.toPng(card, { scale: 3, bgcolor: null })
+    .then(function(dataUrl) {
       bar.style.display = '';
-      document.body.style.padding = '';
-      var imgData = canvas.toDataURL('image/png');
       var { jsPDF } = window.jspdf;
       var pdfW = 210;
       var pdfH = Math.round((H / W) * pdfW);
       var pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [pdfW, pdfH] });
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfW, pdfH, undefined, 'NONE');
+      pdf.addImage(dataUrl, 'PNG', 0, 0, pdfW, pdfH, undefined, 'NONE');
       pdf.save('achievers26-${safeName.replace(/\s+/g, '-').toLowerCase()}.pdf');
       btn.disabled = false;
-      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg> Download as PDF';
+      btn.innerHTML = '📄 Download as PDF';
     }).catch(function(err) {
       bar.style.display = '';
-      document.body.style.padding = '';
-      console.error('PDF generation failed:', err);
+      console.error(err);
       btn.disabled = false;
-      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg> Download as PDF';
+      btn.innerHTML = '📄 Download as PDF';
     });
-  }, 600);
 }
 <\/script>
 
