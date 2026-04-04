@@ -96,6 +96,13 @@ function buildCardHTML(data, photoBase64, mime) {
   .bg-pencil { position: absolute; bottom: 28%; left: 3%; width: 38px; height: 38px; opacity: 0.09; }
   .bg-dna { position: absolute; top: 72%; right: 5%; width: 34px; height: 60px; opacity: 0.08; }
   .bg-star { position: absolute; opacity: 0.18; }
+  .bg-protractor { position: absolute; top: 52px; left: 8px; width: 90px; height: 50px; opacity: 0.10; }
+  .bg-hammer { position: absolute; bottom: 110px; left: 6px; width: 50px; height: 60px; opacity: 0.10; }
+  .bg-certificate { position: absolute; top: 42%; left: 8px; width: 58px; height: 48px; opacity: 0.10; }
+  .bg-medal { position: absolute; top: 40%; right: 6px; width: 44px; height: 58px; opacity: 0.11; }
+  .bg-lightning { position: absolute; top: 8px; right: 48px; width: 28px; height: 52px; opacity: 0.11; }
+  .bg-grid { position: absolute; inset: 0; opacity: 0.03; background-image: linear-gradient(rgba(245,200,66,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(245,200,66,0.8) 1px, transparent 1px); background-size: 20px 20px; }
+  .bg-vtesa { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-family: 'Bebas Neue', 'Arial Black', sans-serif; font-size: 110px; font-weight: 900; color: rgba(255,255,255,0.06); letter-spacing: 0.12em; white-space: nowrap; pointer-events: none; user-select: none; line-height: 1; }
   .header { position: relative; z-index: 2; display: flex; align-items: center; gap: 10px; padding: 14px 14px 8px; }
   .logos { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
   .logo-circle { width: 40px; height: 40px; border-radius: 50%; background: #fff; border: 2px solid #f5c842; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
@@ -184,6 +191,58 @@ function buildCardHTML(data, photoBase64, mime) {
     <svg class="bg-dna" viewBox="0 0 40 80" fill="none" stroke="#f5c842" stroke-width="2" stroke-opacity="0.6"><path d="M8 5 Q20 20 32 35 Q20 50 8 65" fill="none"/><path d="M32 5 Q20 20 8 35 Q20 50 32 65" fill="none"/><line x1="10" y1="17" x2="30" y2="17" stroke="#d4a017" stroke-opacity="0.5"/><line x1="9" y1="27" x2="31" y2="27" stroke="#d4a017" stroke-opacity="0.5"/><line x1="14" y1="35" x2="26" y2="35" stroke="#d4a017" stroke-opacity="0.5"/><line x1="9" y1="43" x2="31" y2="43" stroke="#d4a017" stroke-opacity="0.5"/><line x1="10" y1="53" x2="30" y2="53" stroke="#d4a017" stroke-opacity="0.5"/></svg>
     <svg style="position:absolute;top:5%;left:50%;transform:translateX(-50%);width:60px;height:36px;opacity:0.13;" viewBox="0 0 120 72" fill="none"><path d="M10 36 Q5 20 15 10 Q25 2 35 8 Q28 18 24 28 Q20 36 18 42z" fill="#f9d84a"/><path d="M22 36 Q18 22 26 14 Q34 6 42 12 Q36 22 33 32 Q30 40 28 46z" fill="#d4a017"/><path d="M110 36 Q115 20 105 10 Q95 2 85 8 Q92 18 96 28 Q100 36 102 42z" fill="#f9d84a"/><path d="M98 36 Q102 22 94 14 Q86 6 78 12 Q84 22 87 32 Q90 40 92 46z" fill="#d4a017"/><path d="M55 60 Q48 68 60 70 Q72 68 65 60 Q62 55 60 50 Q58 55 55 60z" fill="#f9d84a"/></svg>
     <svg style="position:absolute;top:52%;right:3%;width:32px;height:32px;opacity:0.12;" viewBox="0 0 100 100" fill="#f9d84a"><path d="M50 10 C30 10 18 25 18 40 C18 55 28 63 32 70 L32 80 Q32 85 38 85 L62 85 Q68 85 68 80 L68 70 C72 63 82 55 82 40 C82 25 70 10 50 10z" fill-opacity="0.45"/><rect x="38" y="85" width="24" height="6" rx="3" fill="#d4a017" fill-opacity="0.6"/><rect x="41" y="91" width="18" height="5" rx="2.5" fill="#f9d84a" fill-opacity="0.5"/></svg>
+
+    <!-- Grid overlay -->
+    <div class="bg-grid"></div>
+
+    <!-- VTESA watermark — inline styles so html2canvas captures it reliably -->
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Arial Black',sans-serif;font-size:110px;font-weight:900;color:rgba(255,255,255,0.07);letter-spacing:0.1em;white-space:nowrap;pointer-events:none;user-select:none;line-height:1;z-index:1;">VTESA</div>
+
+    <!-- Protractor top-left -->
+    <svg class="bg-protractor" viewBox="0 0 180 100" fill="none" stroke="#f5c842" stroke-width="2">
+      <path d="M10 90 A80 80 0 0 1 170 90" stroke-opacity="0.7"/>
+      <line x1="90" y1="90" x2="90" y2="10" stroke-opacity="0.5"/>
+      <line x1="90" y1="90" x2="170" y2="90" stroke-opacity="0.5"/>
+      <line x1="90" y1="90" x2="10" y2="90" stroke-opacity="0.5"/>
+      <line x1="90" y1="90" x2="34" y2="33" stroke-opacity="0.3"/>
+      <line x1="90" y1="90" x2="146" y2="33" stroke-opacity="0.3"/>
+      <text x="82" y="105" fill="#f5c842" font-size="10" fill-opacity="0.6" font-family="Arial">0°</text>
+      <text x="165" y="95" fill="#f5c842" font-size="10" fill-opacity="0.6" font-family="Arial">90</text>
+    </svg>
+
+    <!-- Hammer & chisel bottom-left -->
+    <svg class="bg-hammer" viewBox="0 0 50 70" fill="none">
+      <rect x="18" y="5" width="14" height="22" rx="2" fill="#f5c842" fill-opacity="0.45" stroke="#f9d84a" stroke-width="1.5" stroke-opacity="0.6"/>
+      <rect x="22" y="27" width="6" height="38" rx="2" fill="#d4a017" fill-opacity="0.5" stroke="#f5c842" stroke-width="1" stroke-opacity="0.5"/>
+      <line x1="5" y1="55" x2="45" y2="35" stroke="#f9d84a" stroke-width="3" stroke-opacity="0.5" stroke-linecap="round"/>
+      <rect x="30" y="29" width="18" height="10" rx="2" fill="#f5c842" fill-opacity="0.5" transform="rotate(-30 30 29)"/>
+    </svg>
+
+    <!-- Certificate scroll mid-left -->
+    <svg class="bg-certificate" viewBox="0 0 58 48" fill="none">
+      <rect x="4" y="6" width="50" height="36" rx="3" fill="#f5c842" fill-opacity="0.25" stroke="#f9d84a" stroke-width="1.5" stroke-opacity="0.65"/>
+      <ellipse cx="4" cy="24" rx="4" ry="18" fill="#d4a017" fill-opacity="0.4" stroke="#f5c842" stroke-width="1" stroke-opacity="0.5"/>
+      <ellipse cx="54" cy="24" rx="4" ry="18" fill="#d4a017" fill-opacity="0.4" stroke="#f5c842" stroke-width="1" stroke-opacity="0.5"/>
+      <line x1="12" y1="16" x2="46" y2="16" stroke="#f9d84a" stroke-width="1.5" stroke-opacity="0.6"/>
+      <line x1="12" y1="22" x2="46" y2="22" stroke="#f9d84a" stroke-width="1.5" stroke-opacity="0.6"/>
+      <line x1="12" y1="28" x2="35" y2="28" stroke="#f9d84a" stroke-width="1.5" stroke-opacity="0.6"/>
+      <circle cx="29" cy="40" r="5" fill="#d4a017" fill-opacity="0.7" stroke="#f5c842" stroke-width="1" stroke-opacity="0.6"/>
+    </svg>
+
+    <!-- Gold medal mid-right -->
+    <svg class="bg-medal" viewBox="0 0 44 58" fill="none">
+      <rect x="18" y="0" width="8" height="20" rx="1" fill="#f5c842" fill-opacity="0.4" stroke="#d4a017" stroke-width="1" stroke-opacity="0.5"/>
+      <polygon points="14,0 22,8 30,0" fill="#d4a017" fill-opacity="0.5"/>
+      <circle cx="22" cy="38" r="18" fill="#d4a017" fill-opacity="0.35" stroke="#f9d84a" stroke-width="2" stroke-opacity="0.7"/>
+      <circle cx="22" cy="38" r="12" fill="none" stroke="#f5c842" stroke-width="1" stroke-opacity="0.5"/>
+      <text x="16" y="42" fill="#f9d84a" font-size="10" font-weight="bold" fill-opacity="0.7" font-family="Arial">1st</text>
+    </svg>
+
+    <!-- Lightning bolt top-right -->
+    <svg class="bg-lightning" viewBox="0 0 28 52" fill="#f9d84a">
+      <polygon points="16,2 4,28 14,28 12,50 24,22 14,22" fill-opacity="0.55" stroke="#f5c842" stroke-width="1" stroke-opacity="0.6"/>
+    </svg>
+
   </div>
   <div class="header">
     <div class="logos">
