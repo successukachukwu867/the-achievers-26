@@ -293,7 +293,7 @@ function buildCardHTML(data, photoBase64, mime) {
         <div class="photo-frame">
           <div class="photo-inner">${photoInner}</div>
           <div class="photo-caption">
-            <span class="photo-caption-label">Social media Handle:</span>
+            <span class="photo-caption-label">Handle:</span>
             <span class="photo-caption-value">${esc(data.socialHandle)}</span>
           </div>
         </div>
